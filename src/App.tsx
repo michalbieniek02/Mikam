@@ -120,17 +120,17 @@ function App() {
         <article className="plan-card">
           <p className="plan-no">01 / START</p><p className="plan-setup">Najpierw: strona<br /><b>wycena indywidualna</b></p><h3>49 <small>zł / mies. opieka</small></h3><p className="plan-for">Podstawa, żeby strona była bezpieczna i dostępna.</p>
           <ul><li>Hosting <b>✓</b></li><li>SSL <b>✓</b></li><li>Utrzymanie strony <b>✓</b></li><li>Backupy <b>✓</b></li><li>Aktualizacje techniczne <i>—</i></li><li>Drobne zmiany <i>—</i></li><li>Aktualizacja treści <i>—</i></li><li>Wsparcie mailowe <b>✓</b></li><li>Priorytetowe poprawki <i>—</i></li><li>Monitoring strony <i>—</i></li><li>Duże zmiany / nowe funkcje <em>płatne osobno</em></li></ul>
-          <a href="#kontakt">Wybieram Start <span>↗</span></a>
+          <a className="plan-checkout" href="https://buy.stripe.com/8x2aF0dai24U659atZ5J602" target="_blank" rel="noreferrer" aria-label="Przejdź do płatności Stripe za plan Start"><span>Wybieram Start</span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg></a>
         </article>
         <article className="plan-card plan-card--featured">
           <p className="plan-no">02 / GROW <mark>najczęściej wybierany</mark></p><p className="plan-setup">Najpierw: strona<br /><b>wycena indywidualna</b></p><h3>99 <small>zł / mies. opieka</small></h3><p className="plan-for">Dla firm, które od czasu do czasu chcą coś poprawić albo dodać.</p>
           <ul><li>Hosting <b>✓</b></li><li>SSL <b>✓</b></li><li>Utrzymanie strony <b>✓</b></li><li>Backupy <b>✓</b></li><li>Aktualizacje techniczne <b>✓</b></li><li>Drobne zmiany <b>✓</b></li><li>Aktualizacja treści <b>✓</b></li><li>Wsparcie mailowe <b>✓</b></li><li>Priorytetowe poprawki <i>—</i></li><li>Monitoring strony <i>—</i></li><li>Duże zmiany / nowe funkcje <em>płatne osobno</em></li></ul>
-          <a href="#kontakt">Wybieram Grow <span>↗</span></a>
+          <a className="plan-checkout" href="https://buy.stripe.com/3cI14q4DMgZO2SX31x5J601" target="_blank" rel="noreferrer" aria-label="Przejdź do płatności Stripe za plan Grow"><span>Wybieram Grow</span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg></a>
         </article>
         <article className="plan-card">
-          <p className="plan-no">03 / PRO</p><p className="plan-setup">Najpierw: strona<br /><b>wycena indywidualna</b></p><h3>199 <small>zł / mies. opieka</small></h3><p className="plan-for">Pełna opieka dla firm, których strona ma pracować razem z nimi.</p>
+          <p className="plan-no">03 / PRO</p><p className="plan-setup">Najpierw: strona<br /><b>wycena indywidualna</b></p><h3>149 <small>zł / mies. opieka</small></h3><p className="plan-for">Pełna opieka dla firm, których strona ma pracować razem z nimi.</p>
           <ul><li>Hosting <b>✓</b></li><li>SSL <b>✓</b></li><li>Utrzymanie strony <b>✓</b></li><li>Backupy <b>✓</b></li><li>Aktualizacje techniczne <b>✓</b></li><li>Drobne zmiany <b>✓</b></li><li>Aktualizacja treści <b>✓</b></li><li>Wsparcie mailowe <b>✓</b></li><li>Priorytetowe poprawki <b>✓</b></li><li>Monitoring strony <b>✓</b></li><li>Duże zmiany / nowe funkcje <b>✓</b></li></ul>
-          <a href="#kontakt">Wybieram Pro <span>↗</span></a>
+          <a className="plan-checkout" href="https://buy.stripe.com/3cI3cy3zIfVKbpt45B5J600" target="_blank" rel="noreferrer" aria-label="Przejdź do płatności Stripe za plan Pro"><span>Wybieram Pro</span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg></a>
         </article>
       </div>
     </section>

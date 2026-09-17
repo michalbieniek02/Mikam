@@ -36,3 +36,6 @@
 
 /* Only the hero headline moves higher as the user scrolls. */
 .mountain-copy h1{transform:translateY(calc(var(--hero-scroll,0) * -24vh))}
+
+/* Stripe checkout links styled as the plan-card action. */
+.plan-card>a.plan-checkout{--plan-button-primary:#f5f2ff;--plan-button-hover:#dfff00;position:relative;display:flex;align-items:center;gap:.6rem;width:max-content;padding:18px 0 7px;border-top:1px solid currentColor;font-size:1rem;font-weight:700;color:var(--plan-button-primary);overflow:visible;transition:color .25s ease}.plan-card>a.plan-checkout::after{position:absolute;left:0;bottom:0;width:0;height:2px;background:var(--plan-button-hover);content:'';transition:width .3s ease-out}.plan-card>a.plan-checkout span{font-size:inherit;line-height:1.1}.plan-card>a.plan-checkout svg{width:19px;height:19px;flex:none;transition:transform .22s ease,color .25s ease}.plan-card>a.plan-checkout:hover,.plan-card>a.plan-checkout:focus-visible{color:var(--plan-button-hover)}.plan-card>a.plan-checkout:hover::after,.plan-card>a.plan-checkout:focus-visible::after{width:100%}.plan-card>a.plan-checkout:hover svg,.plan-card>a.plan-checkout:focus-visible svg{transform:translateX(5px)}.plan-card--featured>a.plan-checkout{--plan-button-primary:#111;--plan-button-hover:#3528ff}.plan-card>a.plan-checkout:focus-visible{outline:2px solid var(--plan-button-hover);outline-offset:6px}
