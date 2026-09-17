@@ -1,4 +1,4 @@
-import { useEffect, useState, type CSSProperties, type MouseEvent as ReactMouseEvent } from 'react'
+import { useEffect, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent } from 'react'
 
 const services = [
   ['01', 'Robimy pierwszy ruch', 'Wybieramy firmy, którym możemy realnie pomóc — i przygotowujemy kierunek strony.'],
@@ -11,14 +11,21 @@ function App() {
   const [progress, setProgress] = useState(0)
   const [cursor, setCursor] = useState({ x: -100, y: -100 })
   const [menu, setMenu] = useState(false)
+  const frame = useRef<number | null>(null)
 
   useEffect(() => {
-    const onScroll = () => setProgress(window.scrollY / Math.max(document.body.scrollHeight - window.innerHeight, 1))
+    const onScroll = () => {
+      if (frame.current !== null) return
+      frame.current = requestAnimationFrame(() => {
+        setProgress(window.scrollY / Math.max(document.body.scrollHeight - window.innerHeight, 1))
+        frame.current = null
+      })
+    }
     const onMove = (event: MouseEvent) => setCursor({ x: event.clientX, y: event.clientY })
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('mousemove', onMove)
-    return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('mousemove', onMove) }
+    return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('mousemove', onMove); if (frame.current !== null) cancelAnimationFrame(frame.current) }
   }, [])
 
   const heroProgress = Math.min(Math.max(window.scrollY / Math.max(window.innerHeight, 1), 0), 1)
@@ -59,11 +66,12 @@ function App() {
 
     <section className="hero hero-explode" id="top">
       <div className="hero-sticky">
-        <div className="stage-card stage-card--back"><span>01 / DIGITAL</span><i /></div>
-        <div className="stage-card stage-card--left"><span>MIKAM / SYSTEM</span><b>+</b></div>
-        <div className="stage-card stage-card--right"><span>MAKE IT<br />MATTER</span><i /></div>
-        <div className="stage-card stage-card--center"><small>WEB<br />DESIGN</small><strong>M</strong><em>↓</em></div>
-        <div className="stage-chip chip-one">IDEA</div><div className="stage-chip chip-two">BUILD</div><div className="stage-line" />
+        <div className="hero-art" aria-hidden="true">
+          <div className="art-disc disc-cobalt" /><div className="art-disc disc-lime" />
+          <div className="art-ring ring-one" /><div className="art-ring ring-two" />
+          <div className="art-axis"><i /><i /><i /></div>
+          <p className="art-type">MIKAM<br />/ 2026</p>
+        </div>
         <p className="eyebrow"><span /> mikam / digital pressure studio</p>
         <h1>Robimy<br /><em>ruch.</em></h1>
         <div className="hero-bottom">
