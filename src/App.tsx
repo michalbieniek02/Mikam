@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent } from 'react'
+import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from 'react'
 
 const services = [
   ['01', 'Robimy pierwszy ruch', 'Wybieramy firmy, którym możemy realnie pomóc — i przygotowujemy kierunek strony.'],
@@ -8,16 +8,22 @@ const services = [
 ]
 
 function App() {
-  const [progress, setProgress] = useState(0)
   const [cursor, setCursor] = useState({ x: -100, y: -100 })
   const [menu, setMenu] = useState(false)
   const frame = useRef<number | null>(null)
+  const root = useRef<HTMLElement>(null)
+  const progressBar = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const onScroll = () => {
       if (frame.current !== null) return
       frame.current = requestAnimationFrame(() => {
-        setProgress(window.scrollY / Math.max(document.body.scrollHeight - window.innerHeight, 1))
+        const pageProgress = window.scrollY / Math.max(document.body.scrollHeight - window.innerHeight, 1)
+        const heroProgress = Math.min(Math.max(window.scrollY / Math.max(window.innerHeight * .9, 1), 0), 1)
+        const panelProgress = Math.min(Math.max((heroProgress - .2) / .8, 0), 1)
+        progressBar.current?.style.setProperty('width', `${pageProgress * 100}%`)
+        root.current?.style.setProperty('--hero-scroll', `${heroProgress}`)
+        root.current?.style.setProperty('--panel-scroll', `${panelProgress}`)
         frame.current = null
       })
     }
@@ -25,10 +31,13 @@ function App() {
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('mousemove', onMove)
-    return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('mousemove', onMove); if (frame.current !== null) cancelAnimationFrame(frame.current) }
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('mousemove', onMove)
+      if (frame.current !== null) cancelAnimationFrame(frame.current)
+      frame.current = null
+    }
   }, [])
-
-  const heroProgress = Math.min(Math.max(window.scrollY / Math.max(window.innerHeight, 1), 0), 1)
 
   const scrollToPlans = (event: ReactMouseEvent<HTMLAnchorElement>) => {
     event.preventDefault()
@@ -50,8 +59,8 @@ function App() {
     window.scrollTo({ top: target, behavior: 'smooth' })
   }
 
-  return <main style={{ '--explode': heroProgress } as CSSProperties}>
-    <div className="progress" style={{ width: `${progress * 100}%` }} />
+  return <main ref={root}>
+    <div className="progress" ref={progressBar} />
     <div className="cursor" style={{ transform: `translate(${cursor.x - 12}px, ${cursor.y - 12}px)` }} />
 
     <nav>
@@ -64,20 +73,24 @@ function App() {
       <button className="menu" onClick={() => setMenu(!menu)} aria-label="Otwórz menu"><i /><i /></button>
     </nav>
 
-    <section className="hero hero-explode" id="top">
+    <section className="hero hero-mountain" id="top">
       <div className="hero-sticky">
-        <div className="hero-art" aria-hidden="true">
-          <div className="art-disc disc-cobalt" /><div className="art-disc disc-lime" />
-          <div className="art-ring ring-one" /><div className="art-ring ring-two" />
-          <div className="art-axis"><i /><i /><i /></div>
-          <p className="art-type">MIKAM<br />/ 2026</p>
+        <div className="mountain-backdrop" aria-hidden="true" /><div className="mountain-scrim" aria-hidden="true" />
+        <div className="mountain-copy">
+          <p className="eyebrow"><span /> mikam / digital pressure studio</p>
+          <h1>Wchodzimy<br /><em>wyżej.</em></h1>
+          <div className="hero-bottom">
+            <p>Najpierw robimy Ci stronę.<br />Potem pytamy, czy ją chcesz.</p>
+            <a className="round-link" href="#kontakt"><b>Wejdźmy<br />w to</b><span>↘</span></a>
+          </div>
         </div>
-        <p className="eyebrow"><span /> mikam / digital pressure studio</p>
-        <h1>Robimy<br /><em>ruch.</em></h1>
-        <div className="hero-bottom">
-        <p>Najpierw robimy Ci stronę.<br />Potem pytamy, czy ją chcesz.</p>
-          <a className="round-link" href="#kontakt"><b>Wejdźmy<br />w to</b><span>↘</span></a>
-        </div>
+        <div className="mountain-foreground" aria-hidden="true" />
+        <aside className="mountain-manifest">
+          <p className="eyebrow"><span /> zobacz zanim zdecydujesz</p>
+          <h2>Najpierw<br /><em>pokazujemy.</em><br />Potem budujemy.</h2>
+          <p>Przygotowujemy dopasowany preview strony dla Twojej firmy. Bez długiego briefu. Bez zgadywania.</p>
+          <span className="manifest-index">01 / 01</span>
+        </aside>
         <div className="hero-index">01 <span>/ 05</span></div>
       </div>
     </section>
