@@ -20,7 +20,7 @@ function App() {
       frame.current = requestAnimationFrame(() => {
         const pageProgress = window.scrollY / Math.max(document.body.scrollHeight - window.innerHeight, 1)
         const heroProgress = Math.min(Math.max(window.scrollY / Math.max(window.innerHeight * .9, 1), 0), 1)
-        const panelProgress = Math.min(Math.max((heroProgress - .2) / .8, 0), 1)
+        const panelProgress = Math.min(Math.max((heroProgress - .48) / .52, 0), 1)
         progressBar.current?.style.setProperty('width', `${pageProgress * 100}%`)
         root.current?.style.setProperty('--hero-scroll', `${heroProgress}`)
         root.current?.style.setProperty('--panel-scroll', `${panelProgress}`)
