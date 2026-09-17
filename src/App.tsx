@@ -3,7 +3,7 @@ import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from 
 const services = [
   ['01', 'Robimy pierwszy ruch', 'Wybieramy firmy, którym możemy realnie pomóc — i przygotowujemy kierunek strony.'],
   ['02', 'Pokazujemy, nie gadamy', 'Zamiast długiego briefu dostajesz gotowy preview dopasowany do Twojej firmy.'],
-  ['03', 'Wdrażamy po „tak”', 'Jeśli projekt ma sens, dopracowujemy detale i odpalamy stronę na Twojej domenie.'],
+  ['03', 'Wdrażamy”', 'Jeśli projekt ma sens, dopracowujemy detale i odpalamy stronę na Twojej domenie.'],
   ['04', 'Pilnujemy po starcie', 'Stałe utrzymanie, aktualizacje i spokój — bez szukania informatyka na ostatnią chwilę.'],
 ]
 
