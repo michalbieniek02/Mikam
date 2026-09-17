@@ -95,7 +95,7 @@ function App() {
       </div>
     </section>
 
-    <section className="ticker"><div>STRONY, KTÓRE RUSZAJĄ · MARKI, KTÓRE ZOSTAJĄ · <i>MIKAM WEBDEV</i> · STRONY, KTÓRE RUSZAJĄ · MARKI, KTÓRE ZOSTAJĄ · </div></section>
+    <section className="ticker"><div>OPŁATA STARTOWA: WYCENA INDYWIDUALNA · ZALEŻNA OD ZŁOŻONOŚCI STRONY · ABONAMENT ZACZYNA SIĘ PO WDROŻENIU · <i>MIKAM WEBDEV</i> · OPŁATA STARTOWA: WYCENA INDYWIDUALNA · ZALEŻNA OD ZŁOŻONOŚCI STRONY · ABONAMENT ZACZYNA SIĘ PO WDROŻENIU · </div></section>
 
     <section className="intro">
       <p className="eyebrow"><span /> zero briefów na trzy tygodnie</p>
@@ -118,17 +118,17 @@ function App() {
       </div>
       <div className="plan-grid" id="plan-options">
         <article className="plan-card">
-          <p className="plan-no">01 / START</p><h3>49 <small>zł / mies.</small></h3><p className="plan-for">Podstawa, żeby strona była bezpieczna i dostępna.</p>
+          <p className="plan-no">01 / START</p><p className="plan-setup">Najpierw: strona<br /><b>wycena indywidualna</b></p><h3>49 <small>zł / mies. opieka</small></h3><p className="plan-for">Podstawa, żeby strona była bezpieczna i dostępna.</p>
           <ul><li>Hosting <b>✓</b></li><li>SSL <b>✓</b></li><li>Utrzymanie strony <b>✓</b></li><li>Backupy <b>✓</b></li><li>Aktualizacje techniczne <i>—</i></li><li>Drobne zmiany <i>—</i></li><li>Aktualizacja treści <i>—</i></li><li>Wsparcie mailowe <b>✓</b></li><li>Priorytetowe poprawki <i>—</i></li><li>Monitoring strony <i>—</i></li><li>Duże zmiany / nowe funkcje <em>płatne osobno</em></li></ul>
           <a href="#kontakt">Wybieram Start <span>↗</span></a>
         </article>
         <article className="plan-card plan-card--featured">
-          <p className="plan-no">02 / GROW <mark>najczęściej wybierany</mark></p><h3>99 <small>zł / mies.</small></h3><p className="plan-for">Dla firm, które od czasu do czasu chcą coś poprawić albo dodać.</p>
+          <p className="plan-no">02 / GROW <mark>najczęściej wybierany</mark></p><p className="plan-setup">Najpierw: strona<br /><b>wycena indywidualna</b></p><h3>99 <small>zł / mies. opieka</small></h3><p className="plan-for">Dla firm, które od czasu do czasu chcą coś poprawić albo dodać.</p>
           <ul><li>Hosting <b>✓</b></li><li>SSL <b>✓</b></li><li>Utrzymanie strony <b>✓</b></li><li>Backupy <b>✓</b></li><li>Aktualizacje techniczne <b>✓</b></li><li>Drobne zmiany <b>✓</b></li><li>Aktualizacja treści <b>✓</b></li><li>Wsparcie mailowe <b>✓</b></li><li>Priorytetowe poprawki <i>—</i></li><li>Monitoring strony <i>—</i></li><li>Duże zmiany / nowe funkcje <em>płatne osobno</em></li></ul>
           <a href="#kontakt">Wybieram Grow <span>↗</span></a>
         </article>
         <article className="plan-card">
-          <p className="plan-no">03 / PRO</p><h3>199 <small>zł / mies.</small></h3><p className="plan-for">Pełna opieka dla firm, których strona ma pracować razem z nimi.</p>
+          <p className="plan-no">03 / PRO</p><p className="plan-setup">Najpierw: strona<br /><b>wycena indywidualna</b></p><h3>199 <small>zł / mies. opieka</small></h3><p className="plan-for">Pełna opieka dla firm, których strona ma pracować razem z nimi.</p>
           <ul><li>Hosting <b>✓</b></li><li>SSL <b>✓</b></li><li>Utrzymanie strony <b>✓</b></li><li>Backupy <b>✓</b></li><li>Aktualizacje techniczne <b>✓</b></li><li>Drobne zmiany <b>✓</b></li><li>Aktualizacja treści <b>✓</b></li><li>Wsparcie mailowe <b>✓</b></li><li>Priorytetowe poprawki <b>✓</b></li><li>Monitoring strony <b>✓</b></li><li>Duże zmiany / nowe funkcje <b>✓</b></li></ul>
           <a href="#kontakt">Wybieram Pro <span>↗</span></a>
         </article>
