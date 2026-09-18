@@ -3,13 +3,14 @@ import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from 
 const services = [
   ['01', 'Robimy pierwszy ruch', 'Wybieramy firmy, którym możemy realnie pomóc — i przygotowujemy kierunek strony.'],
   ['02', 'Pokazujemy, nie gadamy', 'Zamiast długiego briefu dostajesz gotowy preview dopasowany do Twojej firmy.'],
-  ['03', 'Wdrażamy”', 'Jeśli projekt ma sens, dopracowujemy detale i odpalamy stronę na Twojej domenie.'],
+  ['03', 'Wdrażamy', 'Jeśli projekt ma sens, dopracowujemy detale i odpalamy stronę na Twojej domenie.'],
   ['04', 'Pilnujemy po starcie', 'Stałe utrzymanie, aktualizacje i spokój — bez szukania informatyka na ostatnią chwilę.'],
 ]
 
 function App() {
   const [cursor, setCursor] = useState({ x: -100, y: -100 })
   const [menu, setMenu] = useState(false)
+
   const frame = useRef<number | null>(null)
   const root = useRef<HTMLElement>(null)
   const progressBar = useRef<HTMLDivElement>(null)
@@ -17,20 +18,26 @@ function App() {
   useEffect(() => {
     const onScroll = () => {
       if (frame.current !== null) return
+
       frame.current = requestAnimationFrame(() => {
         const pageProgress = window.scrollY / Math.max(document.body.scrollHeight - window.innerHeight, 1)
-        const heroProgress = Math.min(Math.max(window.scrollY / Math.max(window.innerHeight * .9, 1), 0), 1)
-        const panelProgress = Math.min(Math.max((heroProgress - .48) / .52, 0), 1)
+        const heroProgress = Math.min(Math.max(window.scrollY / Math.max(window.innerHeight * 0.9, 1), 0), 1)
+        const panelProgress = Math.min(Math.max((heroProgress - 0.48) / 0.52, 0), 1)
+
         progressBar.current?.style.setProperty('width', `${pageProgress * 100}%`)
         root.current?.style.setProperty('--hero-scroll', `${heroProgress}`)
         root.current?.style.setProperty('--panel-scroll', `${panelProgress}`)
+
         frame.current = null
       })
     }
+
     const onMove = (event: MouseEvent) => setCursor({ x: event.clientX, y: event.clientY })
+
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('mousemove', onMove)
+
     return () => {
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('mousemove', onMove)
@@ -42,6 +49,7 @@ function App() {
   const scrollToPlans = (event: ReactMouseEvent<HTMLAnchorElement>) => {
     event.preventDefault()
     setMenu(false)
+
     const grid = document.getElementById('plan-options')
     const featured = grid?.querySelector<HTMLElement>('.plan-card--featured')
     const side = grid?.querySelector<HTMLElement>('.plan-card:not(.plan-card--featured)')
@@ -56,94 +64,250 @@ function App() {
     const sideBottom = window.scrollY + side.getBoundingClientRect().bottom
     const progressBarHeight = 5
     const target = (featuredTop + sideBottom - (window.innerHeight + progressBarHeight)) / 2
+
     window.scrollTo({ top: target, behavior: 'smooth' })
   }
 
-  return <main ref={root}>
-    <div className="progress" ref={progressBar} />
-    <div className="cursor" style={{ transform: `translate(${cursor.x - 12}px, ${cursor.y - 12}px)` }} />
+  return (
+    <main ref={root}>
+      <div className="progress" ref={progressBar} />
+      <div className="cursor" style={{ transform: `translate(${cursor.x - 12}px, ${cursor.y - 12}px)` }} />
 
-    <nav>
-      <a className="logo" href="#top">MIKAM<span>®</span></a>
-      <div className={menu ? 'nav-links open' : 'nav-links'}>
-        <a href="#co-robimy" onClick={() => setMenu(false)}>co robimy</a>
-        <a href="#plan-options" onClick={scrollToPlans}>opieka</a>
-        <a href="#kontakt" onClick={() => setMenu(false)}>kontakt</a>
-      </div>
-      <button className="menu" onClick={() => setMenu(!menu)} aria-label="Otwórz menu"><i /><i /></button>
-    </nav>
-
-    <section className="hero hero-mountain" id="top">
-      <div className="hero-sticky">
-        <div className="mountain-backdrop" aria-hidden="true" /><div className="mountain-scrim" aria-hidden="true" />
-        <div className="mountain-copy">
-          <p className="eyebrow"><span /> mikam / digital pressure studio</p>
-          <h1>Wchodzimy<br /><em>wyżej.</em></h1>
-          <div className="hero-bottom">
-            <p>Najpierw robimy Ci stronę.<br />Potem pytamy, czy ją chcesz.</p>
-            <a className="round-link" href="#kontakt"><b>Wejdźmy<br />w to</b><span>↘</span></a>
-          </div>
+      <nav>
+        <a className="logo" href="#top">
+          MIKAM<span>®</span>
+        </a>
+        <div className={menu ? 'nav-links open' : 'nav-links'}>
+          <a href="#co-robimy" onClick={() => setMenu(false)}>co robimy</a>
+          <a href="#plan-options" onClick={scrollToPlans}>opieka</a>
+          <a href="#kontakt" onClick={() => setMenu(false)}>kontakt</a>
         </div>
-        <div className="mountain-foreground" aria-hidden="true" />
-        <aside className="mountain-manifest">
-          <p className="eyebrow"><span /> zobacz zanim zdecydujesz</p>
-          <h2>Najpierw<br /><em>pokazujemy.</em><br />Potem budujemy.</h2>
-          <p>Przygotowujemy dopasowany preview strony dla Twojej firmy. Bez długiego briefu. Bez zgadywania.</p>
-          <span className="manifest-index">01 / 01</span>
-        </aside>
-        <div className="hero-index">01 <span>/ 05</span></div>
-      </div>
-    </section>
+        <button className="menu" onClick={() => setMenu(!menu)} aria-label="Otwórz menu">
+          <i />
+          <i />
+        </button>
+      </nav>
 
-    <section className="ticker"><div>OPŁATA STARTOWA: WYCENA INDYWIDUALNA · ZALEŻNA OD ZŁOŻONOŚCI STRONY · ABONAMENT ZACZYNA SIĘ PO WDROŻENIU · <i>MIKAM WEBDEV</i> · OPŁATA STARTOWA: WYCENA INDYWIDUALNA · ZALEŻNA OD ZŁOŻONOŚCI STRONY · ABONAMENT ZACZYNA SIĘ PO WDROŻENIU · </div></section>
+      <section className="hero hero-mountain" id="top">
+        <div className="hero-sticky">
+          <div className="mountain-backdrop" aria-hidden="true" />
+          <div className="mountain-scrim" aria-hidden="true" />
 
-    <section className="intro">
-      <p className="eyebrow"><span /> zero briefów na trzy tygodnie</p>
-      <h2>Nie musisz<br />wiedzieć, czego <em>chcesz.</em><br />Najpierw<br />Ci to pokażemy.</h2>
-      <div className="intro-note">Mikam wychodzi<br />z inicjatywą.<br />Ty oceniasz projekt.<br />Bez presji i briefów.</div>
-    </section>
+          <div className="mountain-copy">
+            <p className="eyebrow"><span /> mikam / digital pressure studio</p>
+            <h1>
+              Wchodzimy<br />
+              <em>wyżej.</em>
+            </h1>
+            <div className="hero-bottom">
+              <p>
+                Najpierw robimy Ci stronę.<br />
+                Potem pytamy, czy ją chcesz.
+              </p>
+              <a className="round-link" href="#kontakt">
+                <b>Wejdźmy<br />w to</b>
+                <span>↘</span>
+              </a>
+            </div>
+          </div>
 
-    <section className="services" id="co-robimy">
-      <div className="section-head"><p className="eyebrow"><span /> zakres działania</p><p>(01—04)</p></div>
-      {services.map(([number, title, description]) => <article className="service" key={number}>
-        <span>{number}</span><h3>{title}</h3><p>{description}</p><b>↗</b>
-      </article>)}
-    </section>
+          <div className="mountain-foreground" aria-hidden="true" />
 
-    <section className="plans" id="plany">
-      <div className="plans-heading">
-        <p className="eyebrow"><span /> opieka po wdrożeniu</p>
-        <h2>Strona działa.<br /><em>My czuwamy.</em></h2>
-        <p>Wybierz poziom opieki, który pasuje do tempa Twojej firmy. Bez długiej umowy, bez niespodzianek.</p>
-      </div>
-      <div className="plan-grid" id="plan-options">
-        <article className="plan-card">
-          <p className="plan-no">01 / START</p><p className="plan-setup">Najpierw: strona<br /><b>wycena indywidualna</b></p><h3>49 <small>zł / mies. opieka</small></h3><p className="plan-for">Podstawa, żeby strona była bezpieczna i dostępna.</p>
-          <ul><li>Hosting <b>✓</b></li><li>SSL <b>✓</b></li><li>Utrzymanie strony <b>✓</b></li><li>Backupy <b>✓</b></li><li>Aktualizacje techniczne <i>—</i></li><li>Drobne zmiany <i>—</i></li><li>Aktualizacja treści <i>—</i></li><li>Wsparcie mailowe <b>✓</b></li><li>Priorytetowe poprawki <i>—</i></li><li>Monitoring strony <i>—</i></li><li>Duże zmiany / nowe funkcje <em>płatne osobno</em></li></ul>
-          <a className="plan-checkout" href="https://buy.stripe.com/8x2aF0dai24U659atZ5J602" target="_blank" rel="noreferrer" aria-label="Przejdź do płatności Stripe za plan Start"><span>Wybieram Start</span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg></a>
-        </article>
-        <article className="plan-card plan-card--featured">
-          <p className="plan-no">02 / GROW <mark>najczęściej wybierany</mark></p><p className="plan-setup">Najpierw: strona<br /><b>wycena indywidualna</b></p><h3>99 <small>zł / mies. opieka</small></h3><p className="plan-for">Dla firm, które od czasu do czasu chcą coś poprawić albo dodać.</p>
-          <ul><li>Hosting <b>✓</b></li><li>SSL <b>✓</b></li><li>Utrzymanie strony <b>✓</b></li><li>Backupy <b>✓</b></li><li>Aktualizacje techniczne <b>✓</b></li><li>Drobne zmiany <b>✓</b></li><li>Aktualizacja treści <b>✓</b></li><li>Wsparcie mailowe <b>✓</b></li><li>Priorytetowe poprawki <i>—</i></li><li>Monitoring strony <i>—</i></li><li>Duże zmiany / nowe funkcje <em>płatne osobno</em></li></ul>
-          <a className="plan-checkout" href="https://buy.stripe.com/3cI14q4DMgZO2SX31x5J601" target="_blank" rel="noreferrer" aria-label="Przejdź do płatności Stripe za plan Grow"><span>Wybieram Grow</span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg></a>
-        </article>
-        <article className="plan-card">
-          <p className="plan-no">03 / PRO</p><p className="plan-setup">Najpierw: strona<br /><b>wycena indywidualna</b></p><h3>149 <small>zł / mies. opieka</small></h3><p className="plan-for">Pełna opieka dla firm, których strona ma pracować razem z nimi.</p>
-          <ul><li>Hosting <b>✓</b></li><li>SSL <b>✓</b></li><li>Utrzymanie strony <b>✓</b></li><li>Backupy <b>✓</b></li><li>Aktualizacje techniczne <b>✓</b></li><li>Drobne zmiany <b>✓</b></li><li>Aktualizacja treści <b>✓</b></li><li>Wsparcie mailowe <b>✓</b></li><li>Priorytetowe poprawki <b>✓</b></li><li>Monitoring strony <b>✓</b></li><li>Duże zmiany / nowe funkcje <b>✓</b></li></ul>
-          <a className="plan-checkout" href="https://buy.stripe.com/3cI3cy3zIfVKbpt45B5J600" target="_blank" rel="noreferrer" aria-label="Przejdź do płatności Stripe za plan Pro"><span>Wybieram Pro</span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg></a>
-        </article>
-      </div>
-    </section>
+          <aside className="mountain-manifest">
+            <p className="eyebrow"><span /> zobacz zanim zdecydujesz</p>
+            <h2>
+              Najpierw<br />
+              <em>pokazujemy.</em><br />
+              Potem budujemy.
+            </h2>
+            <p>Przygotowujemy dopasowany preview strony dla Twojej firmy. Bez długiego briefu. Bez zgadywania.</p>
+            <span className="manifest-index">01 / 01</span>
+          </aside>
 
-    <section className="cta" id="kontakt">
-      <p className="eyebrow"><span /> masz firmę, my mamy pomysł</p>
-      <h2>Zobacz, co<br />możemy <em>zrobić.</em></h2>
-      <a href="mailto:hello@mikamwebdev.pl" className="email">hello@mikamwebdev.pl <span>↗</span></a>
-      <div className="cta-ball">LET'S<br />MAKE<br />NOISE</div>
-    </section>
+          <div className="hero-index">01 <span>/ 05</span></div>
+        </div>
+      </section>
 
-    <footer><a className="logo" href="#top">MIKAM<span>®</span></a><p>© 2026 · mikamwebdev.pl</p><p>Made loud in Poland</p></footer>
-  </main>
+      <section className="ticker">
+        <div>
+          OPŁATA STARTOWA: WYCENA INDYWIDUALNA · ZALEŻNA OD ZŁOŻONOŚCI STRONY · ABONAMENT ZACZYNA SIĘ PO WDROŻENIU · <i>MIKAM WEBDEV</i> · OPŁATA STARTOWA: WYCENA INDYWIDUALNA · ZALEŻNA OD ZŁOŻONOŚCI STRONY · ABONAMENT ZACZYNA SIĘ PO WDROŻENIU ·{' '}
+        </div>
+      </section>
+
+      <section className="intro">
+        <p className="eyebrow"><span /> zero briefów na trzy tygodnie</p>
+        <h2>
+          Nie musisz<br />
+          wiedzieć, czego <em>chcesz.</em><br />
+          Najpierw<br />
+          Ci to pokażemy.
+        </h2>
+        <div className="intro-note">
+          Mikam wychodzi<br />
+          z inicjatywą.<br />
+          Ty oceniasz projekt.<br />
+          Bez presji i briefów.
+        </div>
+      </section>
+
+      <section className="services" id="co-robimy">
+        <div className="section-head">
+          <p className="eyebrow"><span /> zakres działania</p>
+          <p>(01—04)</p>
+        </div>
+        {services.map(([number, title, description]) => (
+          <article className="service" key={number}>
+            <span>{number}</span>
+            <h3>{title}</h3>
+            <p>{description}</p>
+            <b>↗</b>
+          </article>
+        ))}
+      </section>
+
+      <section className="plans" id="plany">
+        <div className="plans-heading">
+          <p className="eyebrow"><span /> opieka po wdrożeniu</p>
+          <h2>
+            Strona działa.<br />
+            <em>My czuwamy.</em>
+          </h2>
+          <p>Wybierz poziom opieki, który pasuje do tempa Twojej firmy. Bez długiej umowy, bez niespodzianek.</p>
+        </div>
+
+        <div className="plan-grid" id="plan-options">
+          <article className="plan-card">
+            <p className="plan-no">01 / START</p>
+            <p className="plan-setup">
+              Najpierw: strona<br />
+              <b>wycena indywidualna</b>
+            </p>
+            <h3>49 <small>zł / mies. opieka</small></h3>
+            <p className="plan-for">Podstawa, żeby strona była bezpieczna i dostępna.</p>
+            <ul>
+              <li>Hosting <b>✓</b></li>
+              <li>SSL <b>✓</b></li>
+              <li>Utrzymanie strony <b>✓</b></li>
+              <li>Backupy <b>✓</b></li>
+              <li>Aktualizacje techniczne <i>—</i></li>
+              <li>Drobne zmiany <i>—</i></li>
+              <li>Aktualizacja treści <i>—</i></li>
+              <li>Wsparcie mailowe <b>✓</b></li>
+              <li>Priorytetowe poprawki <i>—</i></li>
+              <li>Monitoring strony <i>—</i></li>
+              <li>Duże zmiany / nowe funkcje <em>płatne osobno</em></li>
+            </ul>
+            <a
+              className="plan-checkout"
+              href="https://buy.stripe.com/8x2aF0dai24U659atZ5J602"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Przejdź do płatności Stripe za plan Start"
+            >
+              <span>Wybieram Start</span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </a>
+          </article>
+
+          <article className="plan-card plan-card--featured">
+            <p className="plan-no">02 / GROW <mark>najczęściej wybierany</mark></p>
+            <p className="plan-setup">
+              Najpierw: strona<br />
+              <b>wycena indywidualna</b>
+            </p>
+            <h3>99 <small>zł / mies. opieka</small></h3>
+            <p className="plan-for">Dla firm, które od czasu do czasu chcą coś poprawić albo dodać.</p>
+            <ul>
+              <li>Hosting <b>✓</b></li>
+              <li>SSL <b>✓</b></li>
+              <li>Utrzymanie strony <b>✓</b></li>
+              <li>Backupy <b>✓</b></li>
+              <li>Aktualizacje techniczne <b>✓</b></li>
+              <li>Drobne zmiany <b>✓</b></li>
+              <li>Aktualizacja treści <b>✓</b></li>
+              <li>Wsparcie mailowe <b>✓</b></li>
+              <li>Priorytetowe poprawki <i>—</i></li>
+              <li>Monitoring strony <i>—</i></li>
+              <li>Duże zmiany / nowe funkcje <em>płatne osobno</em></li>
+            </ul>
+            <a
+              className="plan-checkout"
+              href="https://buy.stripe.com/3cI14q4DMgZO2SX31x5J601"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Przejdź do płatności Stripe za plan Grow"
+            >
+              <span>Wybieram Grow</span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </a>
+          </article>
+
+          <article className="plan-card">
+            <p className="plan-no">03 / PRO</p>
+            <p className="plan-setup">
+              Najpierw: strona<br />
+              <b>wycena indywidualna</b>
+            </p>
+            <h3>149 <small>zł / mies. opieka</small></h3>
+            <p className="plan-for">Pełna opieka dla firm, których strona ma pracować razem z nimi.</p>
+            <ul>
+              <li>Hosting <b>✓</b></li>
+              <li>SSL <b>✓</b></li>
+              <li>Utrzymanie strony <b>✓</b></li>
+              <li>Backupy <b>✓</b></li>
+              <li>Aktualizacje techniczne <b>✓</b></li>
+              <li>Drobne zmiany <b>✓</b></li>
+              <li>Aktualizacja treści <b>✓</b></li>
+              <li>Wsparcie mailowe <b>✓</b></li>
+              <li>Priorytetowe poprawki <b>✓</b></li>
+              <li>Monitoring strony <b>✓</b></li>
+              <li>Duże zmiany / nowe funkcje <b>✓</b></li>
+            </ul>
+            <a
+              className="plan-checkout"
+              href="https://buy.stripe.com/3cI3cy3zIfVKbpt45B5J600"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Przejdź do płatności Stripe za plan Pro"
+            >
+              <span>Wybieram Pro</span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </a>
+          </article>
+        </div>
+      </section>
+
+      <section className="cta" id="kontakt">
+        <p className="eyebrow"><span /> masz firmę, my mamy pomysł</p>
+        <h2>
+          Zobacz, co<br />
+          możemy <em>zrobić.</em>
+        </h2>
+        <a href="mailto:hello@mikamwebdev.pl" className="email">
+          hello@mikamwebdev.pl <span>↗</span>
+        </a>
+        <div className="cta-ball">
+          LET'S<br />
+          MAKE<br />
+          NOISE
+        </div>
+      </section>
+
+      <footer>
+        <a className="logo" href="#top">
+          MIKAM<span>®</span>
+        </a>
+        <p>© 2026 · mikamwebdev.pl</p>
+        <p>Made loud in Poland</p>
+      </footer>
+    </main>
+  )
 }
 
 export default App
