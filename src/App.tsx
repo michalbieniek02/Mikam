@@ -117,9 +117,9 @@ function MarketingSite() {
           <aside className="mountain-manifest">
             <p className="eyebrow"><span /> zobacz zanim zdecydujesz</p>
             <h2>
-              Najpierw<br />
-              <em>pokazujemy.</em><br />
-              Potem budujemy.
+              Strona.<br />
+              <em>Przed</em><br />
+              decyzją.
             </h2>
             <p>Przygotowujemy dopasowany preview strony dla Twojej firmy. Bez długiego briefu. Bez zgadywania.</p>
             <span className="manifest-index">01 / 01</span>
@@ -195,10 +195,10 @@ function MarketingSite() {
             </ul>
             <a
               className="plan-checkout"
-              href="mailto:kontakt@mikamwebdev.pl?subject=Pakiet%20Start%20-%20zapytanie"
-              aria-label="Zapytaj o pakiet Start"
+              href="https://buy.stripe.com/6oU14q7PY6la659atZ5J605"
+              aria-label="Wybierz pakiet Start"
             >
-              <span>Zapytaj o Start</span>
+              <span>Wybieram Start</span>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
@@ -222,10 +222,10 @@ function MarketingSite() {
             </ul>
             <a
               className="plan-checkout"
-              href="mailto:kontakt@mikamwebdev.pl?subject=Pakiet%20Care%20-%20zapytanie"
-              aria-label="Zapytaj o pakiet Care"
+              href="https://buy.stripe.com/3cIcN8eem38Y3X1gSn5J604"
+              aria-label="Wybierz pakiet Care"
             >
-              <span>Zapytaj o Care</span>
+              <span>Wybieram Care</span>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
@@ -249,10 +249,10 @@ function MarketingSite() {
             </ul>
             <a
               className="plan-checkout"
-              href="mailto:kontakt@mikamwebdev.pl?subject=Pakiet%20Pro%20-%20zapytanie"
-              aria-label="Zapytaj o pakiet Pro"
+              href="https://buy.stripe.com/aFacN81rAdNC0KP0Tp5J603"
+              aria-label="Wybierz pakiet Pro"
             >
-              <span>Zapytaj o Pro</span>
+              <span>Wybieram Pro</span>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>

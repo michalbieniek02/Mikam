@@ -3,10 +3,11 @@ import { useEffect, type ReactNode } from 'react'
 type LegalLayoutProps = {
   title: string
   description: string
+  version?: string
   children: ReactNode
 }
 
-function LegalLayout({ title, description, children }: LegalLayoutProps) {
+function LegalLayout({ title, description, version = '1.0 · stan na 27 września 2026 r.', children }: LegalLayoutProps) {
   useEffect(() => {
     document.title = `${title} — Mikam`
     return () => { document.title = 'Mikam — strony, których nie da się przewinąć obojętnie' }
@@ -22,7 +23,7 @@ function LegalLayout({ title, description, children }: LegalLayoutProps) {
         <p className="legal-kicker">Mikam / dokumenty prawne</p>
         <h1>{title}</h1>
         <p className="legal-description">{description}</p>
-        <p className="legal-version">Wersja 1.0 · stan na 27 września 2026 r.</p>
+        <p className="legal-version">Wersja {version}</p>
         <nav className="legal-actions" aria-label="Opcje dokumentu">
           <button type="button" onClick={() => window.print()}>Drukuj lub zapisz PDF</button>
           <a href="mailto:kontakt@mikamwebdev.pl">kontakt@mikamwebdev.pl</a>
@@ -183,7 +184,7 @@ function Terms() {
 
 function Privacy() {
   return (
-    <LegalLayout title="Polityka prywatności i plików cookies Mikam" description="Informacje o przetwarzaniu danych na mikam.cloud, płatnościach Stripe i technologiach wykorzystywanych przez serwis.">
+    <LegalLayout title="Polityka prywatności i plików cookies Mikam" description="Informacje o przetwarzaniu danych na mikam.cloud, płatnościach Stripe i technologiach wykorzystywanych przez serwis." version="1.1 · stan na 28 września 2026 r.">
       <section><h2>1. Administrator danych</h2><p>Administratorem danych osobowych użytkowników serwisu mikam.cloud i klientów jest Michał Bieniek, działający pod oznaczeniem „Mikam”, ul. Mieszka I 8, 05-300 Mińsk Mazowiecki, e-mail: kontakt@mikamwebdev.pl.</p><p>Jeżeli Mikam przetwarza dane odwiedzających stronę konkretnego klienta wyłącznie na jego polecenie w ramach hostingu lub obsługi, administratorem tych danych jest ten klient, a Mikam działa jako podmiot przetwarzający.</p></section>
       <section><h2>2. Jakie dane przetwarzamy</h2><ul>
         <li>dane kontaktowe: imię, nazwisko, nazwa firmy, e-mail, numer telefonu;</li>
@@ -200,9 +201,9 @@ function Privacy() {
         <tr><td>bezpieczeństwo, logi, obrona roszczeń</td><td>art. 6 ust. 1 lit. f RODO</td><td>co do zasady do 12 miesięcy dla logów, dłużej jeśli potrzebne do incydentu lub roszczenia</td></tr>
         <tr><td>analityka lub marketing wymagające zgody</td><td>art. 6 ust. 1 lit. a RODO + właściwe przepisy dotyczące urządzeń końcowych</td><td>do wycofania zgody lub upływu okresu życia identyfikatora</td></tr>
       </tbody></table></section>
-      <section><h2>4. Odbiorcy danych</h2><p>Dane mogą być przekazywane podmiotom wspierającym Mikam w zakresie niezbędnym do świadczenia usług, m.in. dostawcom hostingu lub VPS, DNS/CDN i bezpieczeństwa, operatorowi płatności Stripe, dostawcom repozytoriów i wdrożeń, poczty transakcyjnej, baz danych lub backendu, monitoringu błędów i analityki, a także dostawcy logowania Google/OAuth — jeżeli dana usługa jest faktycznie używana w konkretnym wdrożeniu.</p><p>Serwis mikam.cloud korzysta obecnie z hostingu OVHcloud, wdrożeń z repozytorium GitHub, płatności Stripe oraz fontów dostarczanych przez Google Fonts. Serwis nie uruchamia obecnie narzędzi analitycznych ani reklamowych.</p><p>Niektóre podmioty mogą przetwarzać dane poza EOG. W takim przypadku stosowane są mechanizmy przewidziane w RODO, np. decyzja stwierdzająca odpowiedni stopień ochrony albo standardowe klauzule umowne, stosownie do modelu danego dostawcy.</p></section>
+      <section><h2>4. Odbiorcy danych</h2><p>Dane mogą być przekazywane podmiotom wspierającym Mikam w zakresie niezbędnym do świadczenia usług, m.in. dostawcom hostingu lub VPS, DNS/CDN i bezpieczeństwa, operatorowi płatności Stripe, a przy wyborze danej metody płatności także Google Pay lub PayPal, dostawcom repozytoriów i wdrożeń, poczty transakcyjnej, baz danych lub backendu, monitoringu błędów i analityki, a także dostawcy logowania Google/OAuth — jeżeli dana usługa jest faktycznie używana w konkretnym wdrożeniu.</p><p>Serwis mikam.cloud korzysta obecnie z hostingu OVHcloud, wdrożeń z repozytorium GitHub, płatności Stripe — w tym opcjonalnie Google Pay lub PayPal — oraz fontów dostarczanych przez Google Fonts. Serwis nie uruchamia obecnie narzędzi analitycznych ani reklamowych.</p><p>Niektóre podmioty mogą przetwarzać dane poza EOG. W takim przypadku stosowane są mechanizmy przewidziane w RODO, np. decyzja stwierdzająca odpowiedni stopień ochrony albo standardowe klauzule umowne, stosownie do modelu danego dostawcy.</p></section>
       <section><h2>5. Kontakt</h2><p>Kontakt z Mikam odbywa się obecnie przez e-mail. Podanie danych jest dobrowolne, ale adres e-mail i treść wiadomości są konieczne, aby odpowiedzieć na zapytanie lub przygotować ofertę.</p></section>
-      <section><h2>6. Płatności Stripe</h2><p>Płatności, w tym cykliczne, są obsługiwane przez Stripe. Mikam co do zasady nie otrzymuje pełnego numeru karty płatniczej. Stripe może działać jako odrębny administrator w zakresie własnych obowiązków płatniczych, bezpieczeństwa i zgodności.</p><p>Klient powinien zapoznać się również z informacjami prywatności prezentowanymi przez Stripe w trakcie płatności.</p></section>
+      <section><h2>6. Płatności Stripe, Google Pay i PayPal</h2><p>Płatności, w tym cykliczne, są obsługiwane przez Stripe. W zależności od dostępności i wyboru Klienta płatność może zostać dokonana kartą, przez Google Pay albo PayPal. Mikam co do zasady nie otrzymuje pełnego numeru karty ani danych logowania do portfela płatniczego. Stripe, Google lub PayPal mogą działać jako odrębni administratorzy w zakresie własnych obowiązków płatniczych, bezpieczeństwa i zgodności.</p><p>Klient powinien zapoznać się z informacjami prywatności prezentowanymi przez Stripe oraz wybranego dostawcę płatności w trakcie płatności.</p></section>
       <section><h2>7. Logowanie Google i OAuth</h2><p>Jeżeli serwis udostępnia logowanie Google, użytkownik jest przekierowywany do usługi Google i widzi zakres żądanych danych. Mikam powinien żądać wyłącznie danych niezbędnych do funkcji konta. Integrację należy opisać w interfejsie oraz skonfigurować zgodnie z wymaganiami dostawcy OAuth.</p></section>
       <section><h2>8. Cookies i podobne technologie</h2><p>Serwis może używać plików cookies i podobnych technologii. Cookies niezbędne technicznie mogą być używane w zakresie dopuszczonym prawem bez zgody użytkownika. Cookies i identyfikatory analityczne, reklamowe lub inne nieniezbędne będą uruchamiane dopiero po uzyskaniu wymaganej zgody.</p><p>Obecnie mikam.cloud nie używa narzędzi analitycznych ani reklamowych i nie zapisuje opcjonalnych cookies wymagających banera zgody. Jeśli zostaną wdrożone Google Analytics, Meta Pixel, PostHog lub podobne narzędzie, lista dostawców i kategorii cookies zostanie zaktualizowana, a narzędzia będą blokowane do czasu decyzji użytkownika.</p></section>
       <section><h2>9. Prawa osób</h2><ul>

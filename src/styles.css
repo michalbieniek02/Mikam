@@ -50,3 +50,5 @@
 @media print{.legal-page{background:#fff;color:#000}.legal-header,.legal-actions,.legal-footer{display:none}.legal-document{width:100%;padding:0}.legal-document>h1{font-size:34pt}.legal-content{max-width:none}.legal-content section{break-inside:auto}.legal-content h2{break-after:avoid}.legal-content table{break-inside:avoid}.legal-content p,.legal-content li,.legal-content dd{color:#000;font-size:10pt}}
 
 .legal-actions{position:static;z-index:auto;width:auto;height:auto}
+
+.hero-mountain+.ticker{z-index:4}
