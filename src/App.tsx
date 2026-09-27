@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from 'react'
+import { LegalPage, legalPaths } from './LegalPages'
 
 const services = [
   ['01', 'Robimy pierwszy ruch', 'Wybieramy firmy, którym możemy realnie pomóc — i przygotowujemy kierunek strony.'],
@@ -7,7 +8,7 @@ const services = [
   ['04', 'Pilnujemy po starcie', 'Stałe utrzymanie, aktualizacje i spokój — bez szukania informatyka na ostatnią chwilę.'],
 ]
 
-function App() {
+function MarketingSite() {
   const [cursor, setCursor] = useState({ x: -100, y: -100 })
   const [menu, setMenu] = useState(false)
 
@@ -172,7 +173,7 @@ function App() {
             Strona działa.<br />
             <em>My czuwamy.</em>
           </h2>
-          <p>Wybierz poziom opieki, który pasuje do tempa Twojej firmy. Bez długiej umowy, bez niespodzianek.</p>
+          <p>Wybierz poziom opieki dopasowany do firmy. Minimalny okres to 12 miesięcy, a abonament zaczyna się po uruchomieniu strony.</p>
         </div>
 
         <div className="plan-grid" id="plan-options">
@@ -187,24 +188,17 @@ function App() {
             <ul>
               <li>Hosting <b>✓</b></li>
               <li>SSL <b>✓</b></li>
-              <li>Utrzymanie strony <b>✓</b></li>
-              <li>Backupy <b>✓</b></li>
-              <li>Aktualizacje techniczne <i>—</i></li>
-              <li>Drobne zmiany <i>—</i></li>
-              <li>Aktualizacja treści <i>—</i></li>
-              <li>Wsparcie mailowe <b>✓</b></li>
-              <li>Priorytetowe poprawki <i>—</i></li>
-              <li>Monitoring strony <i>—</i></li>
-              <li>Duże zmiany / nowe funkcje <em>płatne osobno</em></li>
+              <li>Podstawowe utrzymanie <b>✓</b></li>
+              <li>Backup przez 14 dni <b>✓</b></li>
+              <li>Zmiany treści w cenie <i>—</i></li>
+              <li>Czas reakcji <em>do 2 dni roboczych</em></li>
             </ul>
             <a
               className="plan-checkout"
-              href="https://buy.stripe.com/8x2aF0dai24U659atZ5J602"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Przejdź do płatności Stripe za plan Start"
+              href="mailto:kontakt@mikamwebdev.pl?subject=Pakiet%20Start%20-%20zapytanie"
+              aria-label="Zapytaj o pakiet Start"
             >
-              <span>Wybieram Start</span>
+              <span>Zapytaj o Start</span>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
@@ -212,34 +206,26 @@ function App() {
           </article>
 
           <article className="plan-card plan-card--featured">
-            <p className="plan-no">02 / GROW <mark>najczęściej wybierany</mark></p>
+            <p className="plan-no">02 / CARE <mark>najczęściej wybierany</mark></p>
             <p className="plan-setup">
               Najpierw: strona<br />
               <b>wycena indywidualna</b>
             </p>
-            <h3>99 <small>zł / mies. opieka</small></h3>
+            <h3>79 <small>zł / mies. opieka</small></h3>
             <p className="plan-for">Dla firm, które od czasu do czasu chcą coś poprawić albo dodać.</p>
             <ul>
-              <li>Hosting <b>✓</b></li>
-              <li>SSL <b>✓</b></li>
-              <li>Utrzymanie strony <b>✓</b></li>
-              <li>Backupy <b>✓</b></li>
-              <li>Aktualizacje techniczne <b>✓</b></li>
-              <li>Drobne zmiany <b>✓</b></li>
-              <li>Aktualizacja treści <b>✓</b></li>
-              <li>Wsparcie mailowe <b>✓</b></li>
-              <li>Priorytetowe poprawki <i>—</i></li>
-              <li>Monitoring strony <i>—</i></li>
-              <li>Duże zmiany / nowe funkcje <em>płatne osobno</em></li>
+              <li>Wszystko ze Start <b>✓</b></li>
+              <li>Drobne zmiany <em>do 60 min / mies.</em></li>
+              <li>Backup przez 14 dni <b>✓</b></li>
+              <li>Niewykorzystany czas <em>nie przechodzi</em></li>
+              <li>Czas reakcji <em>do 2 dni roboczych</em></li>
             </ul>
             <a
               className="plan-checkout"
-              href="https://buy.stripe.com/3cI14q4DMgZO2SX31x5J601"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Przejdź do płatności Stripe za plan Grow"
+              href="mailto:kontakt@mikamwebdev.pl?subject=Pakiet%20Care%20-%20zapytanie"
+              aria-label="Zapytaj o pakiet Care"
             >
-              <span>Wybieram Grow</span>
+              <span>Zapytaj o Care</span>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
@@ -252,35 +238,28 @@ function App() {
               Najpierw: strona<br />
               <b>wycena indywidualna</b>
             </p>
-            <h3>149 <small>zł / mies. opieka</small></h3>
+            <h3>129 <small>zł / mies. opieka</small></h3>
             <p className="plan-for">Pełna opieka dla firm, których strona ma pracować razem z nimi.</p>
             <ul>
-              <li>Hosting <b>✓</b></li>
-              <li>SSL <b>✓</b></li>
-              <li>Utrzymanie strony <b>✓</b></li>
-              <li>Backupy <b>✓</b></li>
-              <li>Aktualizacje techniczne <b>✓</b></li>
-              <li>Drobne zmiany <b>✓</b></li>
-              <li>Aktualizacja treści <b>✓</b></li>
-              <li>Wsparcie mailowe <b>✓</b></li>
-              <li>Priorytetowe poprawki <b>✓</b></li>
-              <li>Monitoring strony <b>✓</b></li>
-              <li>Duże zmiany / nowe funkcje <b>✓</b></li>
+              <li>Wszystko ze Start <b>✓</b></li>
+              <li>Drobne zmiany <em>do 120 min / mies.</em></li>
+              <li>Priorytet obsługi <b>✓</b></li>
+              <li>Backup przez 14 dni <b>✓</b></li>
+              <li>Niewykorzystany czas <em>nie przechodzi</em></li>
             </ul>
             <a
               className="plan-checkout"
-              href="https://buy.stripe.com/3cI3cy3zIfVKbpt45B5J600"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Przejdź do płatności Stripe za plan Pro"
+              href="mailto:kontakt@mikamwebdev.pl?subject=Pakiet%20Pro%20-%20zapytanie"
+              aria-label="Zapytaj o pakiet Pro"
             >
-              <span>Wybieram Pro</span>
+              <span>Zapytaj o Pro</span>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
             </a>
           </article>
         </div>
+        <p className="plans-legal-note">Każdy pakiet wymaga wcześniejszego Zamówienia z indywidualną ceną wykonania strony. Abonament jest płatny miesięcznie przez Stripe i ma minimalny okres 12 miesięcy. Po tym czasie przechodzi na czas nieokreślony z miesięcznym okresem wypowiedzenia. Szczegóły znajdziesz w <a href="/regulamin">Regulaminie</a>.</p>
       </section>
 
       <section className="cta" id="kontakt">
@@ -289,8 +268,8 @@ function App() {
           Zobacz, co<br />
           możemy <em>zrobić.</em>
         </h2>
-        <a href="mailto:hello@mikamwebdev.pl" className="email">
-          hello@mikamwebdev.pl <span>↗</span>
+        <a href="mailto:kontakt@mikamwebdev.pl" className="email">
+          kontakt@mikamwebdev.pl <span>↗</span>
         </a>
         <div className="cta-ball">
           LET'S<br />
@@ -299,15 +278,28 @@ function App() {
         </div>
       </section>
 
-      <footer>
-        <a className="logo" href="#top">
-          MIKAM<span>®</span>
-        </a>
-        <p>© 2026 · mikamwebdev.pl</p>
-        <p>Made loud in Poland</p>
+      <footer className="site-footer">
+        <div className="footer-brand">
+          <a className="logo" href="#top">MIKAM<span>®</span></a>
+          <p>Mikam — Michał Bieniek<br />działalność nierejestrowana<br />ul. Mieszka I 8, 05-300 Mińsk Mazowiecki</p>
+          <a href="mailto:kontakt@mikamwebdev.pl">kontakt@mikamwebdev.pl</a>
+        </div>
+        <div className="footer-legal" aria-label="Dokumenty prawne">
+          <a href="/regulamin">Regulamin</a>
+          <a href="/polityka-prywatnosci">Polityka prywatności i cookies</a>
+          <a href="/odstapienie">Odstąpienie od umowy</a>
+          <a href="/zglos-nielegalne-tresci">Zgłoś nielegalną treść</a>
+        </div>
+        <p className="footer-copy">© 2026 · mikam.cloud</p>
       </footer>
     </main>
   )
+}
+
+function App() {
+  const path = window.location.pathname.replace(/\/$/, '') || '/'
+  if (legalPaths.has(path)) return <LegalPage path={path} />
+  return <MarketingSite />
 }
 
 export default App
