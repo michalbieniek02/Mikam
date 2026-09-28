@@ -10,10 +10,12 @@
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",
-    "vite": "latest",
-    "typescript": "latest",
+    "lenis": "^1.3.26",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "styled-components": "^6.5.3",
+    "typescript": "latest",
+    "vite": "latest"
   },
   "devDependencies": {
     "@types/node": "latest",
