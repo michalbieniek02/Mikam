@@ -163,17 +163,23 @@ function MarketingSite() {
     const section = lab.current
     if (!section) return
     const media = gsap.matchMedia()
-    media.add('(max-width: 800px)', () => {
+    media.add({ mobile: '(max-width: 800px)', reduced: '(prefers-reduced-motion: reduce)' }, ({ conditions }) => {
+      if (!conditions?.mobile) return
       const rows = section.querySelectorAll('.service')
       rows.forEach((row) => {
-        ScrollTrigger.create({
-          trigger: row,
-          start: 'top 60%',
-          end: 'bottom 60%',
-          toggleClass: 'service--active',
+        gsap.set(row, { '--service-glow': 0 })
+        gsap.timeline({
+          defaults: { duration: 0.5, ease: 'sine.inOut' },
+          scrollTrigger: {
+            trigger: row,
+            start: 'center 80%',
+            end: 'center 30%',
+            scrub: conditions.reduced ? true : 0.35,
+          },
         })
+          .to(row, { '--service-glow': 1 })
+          .to(row, { '--service-glow': 0 })
       })
-      return () => rows.forEach((row) => row.classList.remove('service--active'))
     }, section)
     return () => media.revert()
   }, [])
