@@ -1,0 +1,28 @@
+import { useEffect, type ReactNode } from 'react'
+
+type LegalLayoutProps = {
+  title: string
+  description: string
+  version?: string
+  children: ReactNode
+}
+
+function LegalLayout({ title, description, version = '1.0 · stan na 27 września 2026 r.', children }: LegalLayoutProps) {
+  useEffect(() => {
+    document.title = `${title} — MIKAM`
+    return () => { document.title = 'MIKAM — strony, których nie da się przewinąć obojętnie' }
+  }, [title])
+
+  return (
+    <main className="legal-page">
+      <header className="legal-header">
+        <a className="logo" href="/">MIKAM<span>®</span></a>
+        <a href="/">← wróć na stronę</a>
+      </header>
+      <article className="legal-document">
+        <p className="legal-kicker">MIKAM / dokumenty prawne</p>
+        <h1>{title}</h1>
+        <p className="legal-description">{description}</p>
+        <p className="legal-version">Wersja {version}</p>
+        <nav className="legal-actions" aria-label="Opcje dokumentu">
+          <button type="but

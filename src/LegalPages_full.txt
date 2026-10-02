@@ -26,7 +26,7 @@ function LegalLayout({ title, description, version = '1.0 · stan na 27 wrześni
         <p className="legal-version">Wersja {version}</p>
         <nav className="legal-actions" aria-label="Opcje dokumentu">
           <button type="button" onClick={() => window.print()}>Drukuj lub zapisz PDF</button>
-          <a href="mailto:kontakt@mikam.cloud">kontakt@mikam.cloud</a>
+          <a href="mailto:kontakt@mikamwebdev.pl">kontakt@mikamwebdev.pl</a>
         </nav>
         <div className="legal-content">{children}</div>
       </article>
@@ -54,7 +54,7 @@ function Terms() {
     <LegalLayout title="Regulamin świadczenia usług MIKAM" description="Zasady tworzenia stron internetowych, hostingu, utrzymania i pozostałych usług cyfrowych MIKAM.">
       <section><h2>§ 1. Informacje o Usługodawcy</h2>
         <ol>
-          <li>Usługodawcą jest Michał Bieniek, prowadzący działalność nierejestrowaną pod oznaczeniem „MIKAM”, adres: ul. Mieszka I 8, 05-300 Mińsk Mazowiecki, e-mail: kontakt@mikam.cloud („MIKAM” lub „Usługodawca”).</li>
+          <li>Usługodawcą jest Michał Bieniek, prowadzący działalność nierejestrowaną pod oznaczeniem „MIKAM”, adres: ul. Mieszka I 8, 05-300 Mińsk Mazowiecki, e-mail: kontakt@mikamwebdev.pl („MIKAM” lub „Usługodawca”).</li>
           <li>MIKAM świadczy usługi tworzenia, wdrażania, hostingu, utrzymania i modyfikacji stron internetowych oraz inne uzgodnione usługi cyfrowe.</li>
           <li>Regulamin jest udostępniany nieodpłatnie przed zawarciem umowy w sposób umożliwiający jego pozyskanie, odtwarzanie i utrwalanie.</li>
           <li>Jeżeli Usługodawca uzyska NIP albo zarejestruje działalność gospodarczą, dane identyfikacyjne zostaną zaktualizowane bez wpływu na prawa nabyte Klientów.</li>
@@ -133,7 +133,7 @@ function Terms() {
       </ol></section>
       <section><h2>§ 10. Niedozwolone i nielegalne treści</h2><ol>
         <li>Klient nie może wykorzystywać hostingu do publikowania lub przechowywania treści nielegalnych, naruszających prawa osób trzecich, złośliwego oprogramowania ani treści służących oszustwu, phishingowi lub obchodzeniu zabezpieczeń.</li>
-        <li>Zgłoszenia dotyczące potencjalnie nielegalnej treści można wysyłać na adres kontakt@mikam.cloud. Zgłoszenie powinno wskazywać dokładny URL, uzasadnienie nielegalności, dane kontaktowe zgłaszającego oraz oświadczenie o działaniu w dobrej wierze.</li>
+        <li>Zgłoszenia dotyczące potencjalnie nielegalnej treści można wysyłać na adres kontakt@mikamwebdev.pl. Zgłoszenie powinno wskazywać dokładny URL, uzasadnienie nielegalności, dane kontaktowe zgłaszającego oraz oświadczenie o działaniu w dobrej wierze.</li>
         <li>MIKAM rozpatruje zgłoszenia terminowo i obiektywnie. W razie usunięcia, zablokowania lub ograniczenia treści poinformuje zainteresowanego Klienta o zasadniczych powodach, o ile prawo na to pozwala.</li>
       </ol></section>
       <section><h2>§ 11. Dane osobowe i powierzenie</h2><ol>
@@ -143,7 +143,7 @@ function Terms() {
         <li>Klient odpowiada jako administrator za podstawę prawną, treść obowiązków informacyjnych i legalność danych zbieranych przez swoją stronę, chyba że Zamówienie wyraźnie powierza MIKAM przygotowanie określonych elementów compliance.</li>
       </ol></section>
       <section><h2>§ 12. Reklamacje</h2><ol>
-        <li>Reklamacje można składać e-mailem na kontakt@mikam.cloud.</li>
+        <li>Reklamacje można składać e-mailem na kontakt@mikamwebdev.pl.</li>
         <li>Reklamacja powinna zawierać dane pozwalające zidentyfikować Klienta, Projekt, opis problemu i oczekiwany sposób rozwiązania.</li>
         <li>MIKAM odpowiada na reklamację Konsumenta w terminie wymaganym przez obowiązujące przepisy; w pozostałych przypadkach bez zbędnej zwłoki, co do zasady w ciągu 14 dni.</li>
         <li>Postanowienia Regulaminu nie ograniczają ustawowych praw Konsumenta ani PNPK.</li>
@@ -185,7 +185,7 @@ function Terms() {
 function Privacy() {
   return (
     <LegalLayout title="Polityka prywatności i plików cookies MIKAM" description="Informacje o przetwarzaniu danych na mikam.cloud, płatnościach Stripe i technologiach wykorzystywanych przez serwis." version="1.1 · stan na 28 września 2026 r.">
-      <section><h2>1. Administrator danych</h2><p>Administratorem danych osobowych użytkowników serwisu mikam.cloud i klientów jest Michał Bieniek, działający pod oznaczeniem „MIKAM”, ul. Mieszka I 8, 05-300 Mińsk Mazowiecki, e-mail: kontakt@mikam.cloud.</p><p>Jeżeli MIKAM przetwarza dane odwiedzających stronę konkretnego klienta wyłącznie na jego polecenie w ramach hostingu lub obsługi, administratorem tych danych jest ten klient, a MIKAM działa jako podmiot przetwarzający.</p></section>
+      <section><h2>1. Administrator danych</h2><p>Administratorem danych osobowych użytkowników serwisu mikam.cloud i klientów jest Michał Bieniek, działający pod oznaczeniem „MIKAM”, ul. Mieszka I 8, 05-300 Mińsk Mazowiecki, e-mail: kontakt@mikamwebdev.pl.</p><p>Jeżeli MIKAM przetwarza dane odwiedzających stronę konkretnego klienta wyłącznie na jego polecenie w ramach hostingu lub obsługi, administratorem tych danych jest ten klient, a MIKAM działa jako podmiot przetwarzający.</p></section>
       <section><h2>2. Jakie dane przetwarzamy</h2><ul>
         <li>dane kontaktowe: imię, nazwisko, nazwa firmy, e-mail, numer telefonu;</li>
         <li>dane rozliczeniowe i transakcyjne niezbędne do obsługi płatności i dokumentacji;</li>
@@ -208,7 +208,7 @@ function Privacy() {
       <section><h2>8. Cookies i podobne technologie</h2><p>Serwis może używać plików cookies i podobnych technologii. Cookies niezbędne technicznie mogą być używane w zakresie dopuszczonym prawem bez zgody użytkownika. Cookies i identyfikatory analityczne, reklamowe lub inne nieniezbędne będą uruchamiane dopiero po uzyskaniu wymaganej zgody.</p><p>Obecnie mikam.cloud nie używa narzędzi analitycznych ani reklamowych i nie zapisuje opcjonalnych cookies wymagających banera zgody. Jeśli zostaną wdrożone Google Analytics, Meta Pixel, PostHog lub podobne narzędzie, lista dostawców i kategorii cookies zostanie zaktualizowana, a narzędzia będą blokowane do czasu decyzji użytkownika.</p></section>
       <section><h2>9. Prawa osób</h2><ul>
         <li>dostęp do danych i otrzymanie ich kopii;</li><li>sprostowanie danych;</li><li>usunięcie danych, gdy zachodzą przesłanki;</li><li>ograniczenie przetwarzania;</li><li>przenoszenie danych — gdy ma zastosowanie;</li><li>sprzeciw wobec przetwarzania opartego na prawnie uzasadnionym interesie;</li><li>wycofanie zgody w dowolnym momencie bez wpływu na zgodność z prawem wcześniejszego przetwarzania;</li><li>wniesienie skargi do Prezesa Urzędu Ochrony Danych Osobowych.</li>
-      </ul><p>Żądania dotyczące praw można kierować na kontakt@mikam.cloud.</p></section>
+      </ul><p>Żądania dotyczące praw można kierować na kontakt@mikamwebdev.pl.</p></section>
       <section><h2>10. Bezpieczeństwo</h2><p>MIKAM stosuje adekwatne do ryzyka środki organizacyjne i techniczne, w szczególności szyfrowane połączenia HTTPS, kontrolę dostępu, aktualizacje, kopie zapasowe, separację projektów w zakresie uzasadnionym architekturą oraz ograniczenie dostępu do danych.</p><p>Żaden system teleinformatyczny nie gwarantuje bezpieczeństwa absolutnego. W przypadku naruszenia ochrony danych stosowane są procedury wynikające z RODO.</p></section>
       <section><h2>11. Dane na stronach klientów</h2><p>Jeżeli formularz na stronie Klienta przesyła dane do systemu hostowanego lub obsługiwanego przez MIKAM, role stron należy opisać w umowie powierzenia. Klient jako administrator odpowiada m.in. za podstawy prawne, własną politykę prywatności i zgodność procesu zbierania danych.</p><p>MIKAM nie wykorzystuje powierzonych danych klientów do własnego marketingu ani innych własnych celów niezgodnych z instrukcjami administratora.</p></section>
       <section><h2>12. Zmiany Polityki</h2><p>Polityka może być aktualizowana wraz ze zmianą narzędzi, funkcji lub prawa. Data aktualnej wersji znajduje się w nagłówku.</p></section>
@@ -219,7 +219,7 @@ function Privacy() {
 function Withdrawal() {
   return (
     <LegalLayout title="Formularz odstąpienia od umowy" description="Formularz należy wypełnić i odesłać tylko w przypadku chęci odstąpienia od umowy, jeżeli prawo odstąpienia przysługuje.">
-      <section><h2>Adresat</h2><p>Michał Bieniek, MIKAM<br />ul. Mieszka I 8, 05-300 Mińsk Mazowiecki<br />kontakt@mikam.cloud</p></section>
+      <section><h2>Adresat</h2><p>Michał Bieniek, MIKAM<br />ul. Mieszka I 8, 05-300 Mińsk Mazowiecki<br />kontakt@mikamwebdev.pl</p></section>
       <section className="withdrawal-form"><h2>Oświadczenie</h2>
         <p>Ja/My (*) niniejszym informuję/informujemy (*) o odstąpieniu od umowy o świadczenie następującej usługi:</p><p className="form-line" />
         <p>Data zawarcia umowy:</p><p className="form-line" />
@@ -237,7 +237,7 @@ function Withdrawal() {
 function IllegalContent() {
   return (
     <LegalLayout title="Procedura zgłaszania nielegalnych treści" description="Mechanizm notice-and-action dla treści przechowywanych w ramach usług hostingu MIKAM.">
-      <section><h2>1. Jak zgłosić</h2><p>Zgłoszenie dotyczące treści przechowywanej w ramach hostingu MIKAM należy przesłać na <a href="mailto:kontakt@mikam.cloud?subject=ZGŁOSZENIE%20NIELEGALNEJ%20TREŚCI">kontakt@mikam.cloud</a> z tytułem „ZGŁOSZENIE NIELEGALNEJ TREŚCI”.</p></section>
+      <section><h2>1. Jak zgłosić</h2><p>Zgłoszenie dotyczące treści przechowywanej w ramach hostingu MIKAM należy przesłać na <a href="mailto:kontakt@mikamwebdev.pl?subject=ZGŁOSZENIE%20NIELEGALNEJ%20TREŚCI">kontakt@mikamwebdev.pl</a> z tytułem „ZGŁOSZENIE NIELEGALNEJ TREŚCI”.</p></section>
       <section><h2>2. Zgłoszenie powinno zawierać</h2><ul>
         <li>uzasadnione wyjaśnienie, dlaczego zgłaszający uważa konkretną informację za nielegalną;</li>
         <li>dokładny adres URL lub inne precyzyjne wskazanie miejsca treści;</li>

@@ -1,0 +1,40 @@
+ion">Wersja {version}</p>
+        <nav className="legal-actions" aria-label="Opcje dokumentu">
+          <button type="button" onClick={() => window.print()}>Drukuj lub zapisz PDF</button>
+          <a href="mailto:kontakt@mikamwebdev.pl">kontakt@mikamwebdev.pl</a>
+        </nav>
+        <div className="legal-content">{children}</div>
+      </article>
+      <LegalFooter />
+    </main>
+  )
+}
+
+function LegalFooter() {
+  return (
+    <footer className="legal-footer">
+      <p><strong>MIKAM — Michał Bieniek</strong><br />działalność nierejestrowana<br />ul. Mieszka I 8, 05-300 Mińsk Mazowiecki</p>
+      <div>
+        <a href="/regulamin">Regulamin</a>
+        <a href="/polityka-prywatnosci">Polityka prywatności i cookies</a>
+        <a href="/odstapienie">Odstąpienie od umowy</a>
+        <a href="/zglos-nielegalne-tresci">Zgłoś nielegalną treść</a>
+      </div>
+    </footer>
+  )
+}
+
+function Terms() {
+  return (
+    <LegalLayout title="Regulamin świadczenia usług MIKAM" description="Zasady tworzenia stron internetowych, hostingu, utrzymania i pozostałych usług cyfrowych MIKAM.">
+      <section><h2>§ 1. Informacje o Usługodawcy</h2>
+        <ol>
+          <li>Usługodawcą jest Michał Bieniek, prowadzący działalność nierejestrowaną pod oznaczeniem „MIKAM”, adres: ul. Mieszka I 8, 05-300 Mińsk Mazowiecki, e-mail: kontakt@mikamwebdev.pl („MIKAM” lub „Usługodawca”).</li>
+          <li>MIKAM świadczy usługi tworzenia, wdrażania, hostingu, utrzymania i modyfikacji stron internetowych oraz inne uzgodnione usługi cyfrowe.</li>
+          <li>Regulamin jest udostępniany nieodpłatnie przed zawarciem umowy w sposób umożliwiający jego pozyskanie, odtwarzanie i utrwalanie.</li>
+          <li>Jeżeli Usługodawca uzyska NIP albo zarejestruje działalność gospodarczą, dane identyfikacyjne zostaną zaktualizowane bez wpływu na prawa nabyte Klientów.</li>
+        </ol>
+      </section>
+      <section><h2>§ 2. Definicje</h2>
+        <dl>
+          <dt>Klient</dt><dd>osoba fizyczna, osoba prawna albo jednostka organizacyjna zawierająca umowę z M

@@ -1,0 +1,31 @@
+ć obojętnie' }
+  }, [title])
+
+  return (
+    <main className="legal-page">
+      <header className="legal-header">
+        <a className="logo" href="/">MIKAM<span>®</span></a>
+        <a href="/">← wróć na stronę</a>
+      </header>
+      <article className="legal-document">
+        <p className="legal-kicker">MIKAM / dokumenty prawne</p>
+        <h1>{title}</h1>
+        <p className="legal-description">{description}</p>
+        <p className="legal-version">Wersja {version}</p>
+        <nav className="legal-actions" aria-label="Opcje dokumentu">
+          <button type="button" onClick={() => window.print()}>Drukuj lub zapisz PDF</button>
+          <a href="mailto:kontakt@mikamwebdev.pl">kontakt@mikamwebdev.pl</a>
+        </nav>
+        <div className="legal-content">{children}</div>
+      </article>
+      <LegalFooter />
+    </main>
+  )
+}
+
+function LegalFooter() {
+  return (
+    <footer className="legal-footer">
+      <p><strong>MIKAM — Michał Bieniek</strong><br />działalność nierejestrowana<br />ul. Mieszka I 8, 05-300 Mińsk Mazowiecki</p>
+      <div>
+        <a href="/regulamin">R
