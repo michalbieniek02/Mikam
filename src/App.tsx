@@ -160,6 +160,25 @@ function MarketingSite() {
   }, [])
 
   useEffect(() => {
+    const section = lab.current
+    if (!section) return
+    const media = gsap.matchMedia()
+    media.add('(max-width: 800px)', () => {
+      const rows = section.querySelectorAll('.service')
+      rows.forEach((row) => {
+        ScrollTrigger.create({
+          trigger: row,
+          start: 'top 60%',
+          end: 'bottom 60%',
+          toggleClass: 'service--active',
+        })
+      })
+      return () => rows.forEach((row) => row.classList.remove('service--active'))
+    }, section)
+    return () => media.revert()
+  }, [])
+
+  useEffect(() => {
     const cards = plans.current?.querySelectorAll('.plan-entry')
     if (!cards?.length) return
 

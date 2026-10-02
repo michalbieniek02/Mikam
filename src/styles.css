@@ -300,6 +300,9 @@ button { font: inherit; }
 
   .services { position: relative; inset: auto; padding: 64px 7vw; overflow: visible; opacity: 1; pointer-events: auto; }
   .service { padding: 24px 0; grid-template-columns: 12% 1fr auto; gap: 10px; }
+  .service:hover { padding: 24px 0; }
+  .service:hover::before { transform: translateY(102%); }
+  .service.service--active::before { transform: translateY(0); }
   .service h3 { font-size: clamp(2.5rem, 12vw, 4rem); }
   .service p { grid-column: 2 / 4; font-size: .8rem; }
   .service b { grid-column: 3; grid-row: 1; }
@@ -350,6 +353,7 @@ button { font: inherit; }
 }
 
 @media (max-width: 800px) and (prefers-reduced-motion: reduce) {
+  .service::before { transition: none; }
   .visual-lab { height: auto; }
   .lab-stage { height: 100svh; }
   .lab-visual { position: relative; }
