@@ -201,7 +201,8 @@ button { font: inherit; }
 .paper-plane__fold { fill: #f1ff82; }
 .paper-plane__spine { fill: #202500; opacity: .82; }
 
-.site-footer { position: relative; z-index: 1; height: 212px; padding: 52px 4.5vw; display: grid; grid-template-columns: 1.25fr 1fr auto auto; align-items: start; gap: 6vw; overflow: visible; isolation: isolate; border-top: 1px solid #303035; background: #09090b; color: #a8a8ae; font: .64rem/1.7 'DM Mono'; }
+.footer-runway { position: relative; height: calc(212px + 240svh); background: #09090b; }
+.site-footer { position: sticky; top: calc(100svh - 212px); z-index: 1; height: 212px; padding: 52px 4.5vw; display: grid; grid-template-columns: 1.25fr 1fr auto auto; align-items: start; gap: 6vw; overflow: visible; isolation: isolate; border-top: 1px solid #303035; background: #09090b; color: #a8a8ae; font: .64rem/1.7 'DM Mono'; }
 .footer-flight { position: absolute; z-index: 0; top: -236px; left: 0; width: 100%; height: 420px; overflow: visible; }
 .footer-brand, .footer-legal, .footer-copy { position: relative; z-index: 2; }
 .footer-brand { display: grid; gap: 14px; }
@@ -336,6 +337,8 @@ button { font: inherit; }
   .lab-shutters { display: none; }
   .mountain-manifest { display: none; }
   .paper-plane { display: none; }
+  .footer-runway { height: auto; }
+  .site-footer { position: relative; top: auto; }
 }
 
 @media print {

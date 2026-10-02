@@ -98,7 +98,13 @@ function MarketingSite() {
         gsap.set(flyer, { autoAlpha: 0 })
         gsap.set(body, { scale: 0.62 })
         gsap.timeline({
-          scrollTrigger: { trigger: section, start: 'top bottom', end: 'bottom bottom', scrub: 2.2 },
+          scrollTrigger: {
+            trigger: section,
+            start: 'top bottom',
+            end: 'bottom bottom',
+            scrub: 1.6,
+            invalidateOnRefresh: true,
+          },
         })
           .to(flyer, { autoAlpha: 1, duration: 0.06 }, 0)
           .to(flyer, {
@@ -190,7 +196,8 @@ function MarketingSite() {
 
       <section className="cta" id="kontakt"><div className="cta-glow" aria-hidden="true" /><p className="eyebrow"><span /> masz firmę, my mamy pomysł</p><h2>Nie pytaj,<br />czy da się<br /><em>ładniej.</em></h2><a href="mailto:kontakt@mikam.cloud" className="email">kontakt@mikam.cloud <span>↗</span></a><p className="cta-side">Napisz. Zobaczymy, co da się zrobić z Twoją marką, zanim cokolwiek kupisz.</p></section>
 
-      <footer className="site-footer" ref={flight}>
+      <section className="footer-runway" ref={flight} aria-label="Zakończenie strony">
+      <footer className="site-footer">
         <svg className="footer-flight" viewBox="0 0 1000 420" preserveAspectRatio="none" aria-hidden="true">
           <path ref={flightPath} d="M-80 350 C110 350 200 300 275 205 C350 110 330 20 455 18 C600 15 650 155 585 245 C510 350 365 315 350 215 C335 110 480 70 570 145 C670 230 700 350 850 350" />
         </svg>
@@ -204,6 +211,7 @@ function MarketingSite() {
         </svg>
         <div className="footer-brand"><a className="logo" href="#top">MIKAM<span>®</span></a><p>MIKAM — Michał Bieniek<br />działalność nierejestrowana<br />ul. Mieszka I 8, 05-300 Mińsk Mazowiecki</p><a href="mailto:kontakt@mikam.cloud">kontakt@mikam.cloud</a></div><div className="footer-legal" aria-label="Dokumenty prawne"><a href="/regulamin">Regulamin</a><a href="/polityka-prywatnosci">Polityka prywatności i cookies</a><a href="/odstapienie">Odstąpienie od umowy</a><a href="/zglos-nielegalne-tresci">Zgłoś nielegalną treść</a></div><BackToTop /><p className="footer-copy">© 2026 · mikam.cloud</p>
       </footer>
+      </section>
     </main>
   )
 }
