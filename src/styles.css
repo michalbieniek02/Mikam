@@ -51,15 +51,19 @@ button { font: inherit; }
 
 .cursor {
   position: fixed;
-  z-index: 99;
+  z-index: 1000;
   top: 0;
   left: 0;
-  width: 24px;
-  height: 24px;
-  border: 1px solid var(--lime);
   border-radius: 50%;
+  opacity: 0;
+  visibility: hidden;
   pointer-events: none;
   will-change: transform;
+}
+.cursor--dot { width: 6px; height: 6px; background: var(--lime); }
+.cursor--ring { width: 34px; height: 34px; border: 1px solid var(--lime); }
+@media (min-width: 801px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .has-smooth-cursor, .has-smooth-cursor * { cursor: none !important; }
 }
 
 .logo { font-size: 1.45rem; font-weight: 800; letter-spacing: -.11em; line-height: 1; }
@@ -145,10 +149,14 @@ button { font: inherit; }
 .plans-heading h2 { margin: 8vw 0 0; font-size: clamp(4rem, 7.5vw, 9rem); line-height: .84; letter-spacing: -.09em; }
 .plans-heading > p:last-child { max-width: 390px; margin: 0 0 10px; color: #d9d5ff; font-size: .9rem; line-height: 1.65; }
 .plan-grid { margin-top: 8vw; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-.plan-card { min-height: 630px; padding: 24px; display: flex; flex-direction: column; background: #17151d; color: #f6f3fb; border-radius: 2px; box-shadow: 0 35px 80px rgba(18,11,68,.2); transition: transform .4s cubic-bezier(.2,.8,.2,1); }
-.plan-card:hover { transform: translateY(-10px); }
+.plan-entry { min-width: 0; }
+.plan-card { min-height: 630px; padding: 24px; display: flex; flex-direction: column; background: #17151d; color: #f6f3fb; border-radius: 2px; box-shadow: 0 35px 80px rgba(18,11,68,.2); }
 .plan-card--featured { background: var(--lime); color: #111; transform: translateY(-24px); }
-.plan-card--featured:hover { transform: translateY(-34px); }
+.plan-card:focus-within { outline: 2px solid currentColor; outline-offset: 5px; }
+@media (min-width: 801px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .plan-grid { min-height: 690px; align-items: start; }
+  .plan-card { min-height: 420px; }
+}
 .plan-no { margin: 0; font: .7rem 'DM Mono'; }
 .plan-no mark { float: right; padding: 5px 7px; background: #111; color: var(--lime); font-size: .55rem; text-transform: uppercase; }
 .plan-setup { margin: 28px 0 -12px; padding: 11px 0; border-block: 1px solid rgba(255,255,255,.22); color: #c9c6d0; font: .65rem/1.5 'DM Mono'; text-transform: uppercase; }

@@ -3,6 +3,8 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { MotionPathPlugin } from 'gsap/MotionPathPlugin'
 import { LegalPage, legalPaths } from './LegalPages'
+import { SmoothCursor } from './SmoothCursor'
+import { PlanCard } from './PlanCard'
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin)
 
@@ -25,7 +27,6 @@ function BackToTop() {
 function MarketingSite() {
   const root = useRef<HTMLElement>(null)
   const progressBar = useRef<HTMLDivElement>(null)
-  const cursor = useRef<HTMLDivElement>(null)
   const lab = useRef<HTMLElement>(null)
   const nav = useRef<HTMLElement>(null)
   const plans = useRef<HTMLElement>(null)
@@ -35,7 +36,6 @@ function MarketingSite() {
 
   useEffect(() => {
     let frame = 0
-    let pointerFrame = 0
     let lastScroll = window.scrollY
     let viewportHeight = window.innerHeight
     let maxScroll = 1
@@ -74,25 +74,14 @@ function MarketingSite() {
       })
     }
 
-    const onPointer = (event: PointerEvent) => {
-      if (pointerFrame) cancelAnimationFrame(pointerFrame)
-      pointerFrame = requestAnimationFrame(() => {
-        cursor.current?.style.setProperty('transform', `translate3d(${event.clientX - 12}px, ${event.clientY - 12}px, 0)`)
-        pointerFrame = 0
-      })
-    }
-
     window.addEventListener('scroll', update, { passive: true })
     window.addEventListener('resize', measure, { passive: true })
-    window.addEventListener('pointermove', onPointer, { passive: true })
     measure()
 
     return () => {
       if (frame) cancelAnimationFrame(frame)
-      if (pointerFrame) cancelAnimationFrame(pointerFrame)
       window.removeEventListener('scroll', update)
       window.removeEventListener('resize', measure)
-      window.removeEventListener('pointermove', onPointer)
     }
   }, [])
 
@@ -136,31 +125,27 @@ function MarketingSite() {
   }, [])
 
   useEffect(() => {
-    const cards = plans.current?.querySelectorAll('.plan-card')
+    const cards = plans.current?.querySelectorAll('.plan-entry')
     if (!cards?.length) return
 
     const media = gsap.matchMedia()
     const context = gsap.context(() => {
       media.add({
         animate: '(prefers-reduced-motion: no-preference)',
-        desktop: '(min-width: 801px)',
       }, ({ conditions }) => {
         if (!conditions?.animate) return
 
         gsap.from(cards, {
-          xPercent: (index) => conditions.desktop ? (index - 1) * 24 : 0,
-          y: conditions.desktop ? 110 : 56,
-          rotation: (index) => conditions.desktop ? (index - 1) * 4 : 0,
-          clipPath: 'inset(0 0 100% 0)',
+          y: 44,
           autoAlpha: 0,
-          duration: .8,
-          stagger: .12,
+          duration: .65,
+          stagger: .1,
           ease: 'power4.out',
-          clearProps: 'transform,clip-path,opacity,visibility',
+          clearProps: 'transform,opacity,visibility',
           scrollTrigger: {
-            trigger: cards[0],
+            trigger: plans.current?.querySelector('.plan-grid'),
             start: 'top 82%',
-            toggleActions: 'play none none reverse',
+            once: true,
           },
         })
       })
@@ -174,7 +159,7 @@ function MarketingSite() {
 
   return (
     <main className="marketing" ref={root}>
-      <div className="progress" ref={progressBar} /><div className="cursor" ref={cursor} />
+      <div className="progress" ref={progressBar} /><SmoothCursor />
       <nav className="site-nav" ref={nav} aria-label="Główna nawigacja"><a className="logo" href="#top">MIKAM<span>®</span></a><div className="nav-links"><a href="#studio">studio</a><a href="#co-robimy">jak działamy</a><a href="#plan-options">opieka</a><a href="#kontakt">kontakt</a></div></nav>
       <section className="hero-mountain" id="top">
         <div className="hero-sticky">
@@ -196,9 +181,9 @@ function MarketingSite() {
       <section className="plans" id="plany" ref={plans}>
         <div className="plans-heading"><p className="eyebrow"><span /> opieka po wdrożeniu</p><h2>Strona działa.<br /><em>My czuwamy.</em></h2><p>Wybierz poziom opieki dopasowany do firmy. Minimalny okres to 12 miesięcy, a abonament zaczyna się po uruchomieniu strony.</p></div>
         <div className="plan-grid" id="plan-options">
-          <article className="plan-card"><p className="plan-no">01 / START</p><p className="plan-setup">Najpierw: strona<br /><b>wycena indywidualna</b></p><h3>49 <small>zł / mies. opieka</small></h3><p className="plan-for">Podstawa, żeby strona była bezpieczna i dostępna.</p><ul><li>Hosting <b>✓</b></li><li>SSL <b>✓</b></li><li>Podstawowe utrzymanie <b>✓</b></li><li>Backup przez 14 dni <b>✓</b></li><li>Zmiany treści w cenie <i>—</i></li><li>Czas reakcji <em>do 2 dni roboczych</em></li></ul><a className="plan-checkout" href="https://buy.stripe.com/6oU14q7PY6la659atZ5J605" aria-label="Wybierz pakiet Start"><span>Wybieram Start</span><Arrow /></a></article>
-          <article className="plan-card plan-card--featured"><p className="plan-no">02 / CARE <mark>najczęściej wybierany</mark></p><p className="plan-setup">Najpierw: strona<br /><b>wycena indywidualna</b></p><h3>79 <small>zł / mies. opieka</small></h3><p className="plan-for">Dla firm, które od czasu do czasu chcą coś poprawić albo dodać.</p><ul><li>Wszystko ze Start <b>✓</b></li><li>Drobne zmiany <em>do 60 min / mies.</em></li><li>Backup przez 14 dni <b>✓</b></li><li>Niewykorzystany czas <em>nie przechodzi</em></li><li>Czas reakcji <em>do 2 dni roboczych</em></li></ul><a className="plan-checkout" href="https://buy.stripe.com/3cIcN8eem38Y3X1gSn5J604" aria-label="Wybierz pakiet Care"><span>Wybieram Care</span><Arrow /></a></article>
-          <article className="plan-card"><p className="plan-no">03 / PRO</p><p className="plan-setup">Najpierw: strona<br /><b>wycena indywidualna</b></p><h3>129 <small>zł / mies. opieka</small></h3><p className="plan-for">Pełna opieka dla firm, których strona ma pracować razem z nimi.</p><ul><li>Wszystko ze Start <b>✓</b></li><li>Drobne zmiany <em>do 120 min / mies.</em></li><li>Priorytet obsługi <b>✓</b></li><li>Backup przez 14 dni <b>✓</b></li><li>Niewykorzystany czas <em>nie przechodzi</em></li></ul><a className="plan-checkout" href="https://buy.stripe.com/aFacN81rAdNC0KP0Tp5J603" aria-label="Wybierz pakiet Pro"><span>Wybieram Pro</span><Arrow /></a></article>
+          <PlanCard><p className="plan-no">01 / START</p><p className="plan-setup">Najpierw: strona<br /><b>wycena indywidualna</b></p><h3>49 <small>zł / mies. opieka</small></h3><p className="plan-for">Podstawa, żeby strona była bezpieczna i dostępna.</p><ul><li>Hosting <b>✓</b></li><li>SSL <b>✓</b></li><li>Podstawowe utrzymanie <b>✓</b></li><li>Backup przez 14 dni <b>✓</b></li><li>Zmiany treści w cenie <i>—</i></li><li>Czas reakcji <em>do 2 dni roboczych</em></li></ul><a className="plan-checkout" href="https://buy.stripe.com/6oU14q7PY6la659atZ5J605" aria-label="Wybierz pakiet Start"><span>Wybieram Start</span><Arrow /></a></PlanCard>
+          <PlanCard featured><p className="plan-no">02 / CARE <mark>najczęściej wybierany</mark></p><p className="plan-setup">Najpierw: strona<br /><b>wycena indywidualna</b></p><h3>79 <small>zł / mies. opieka</small></h3><p className="plan-for">Dla firm, które od czasu do czasu chcą coś poprawić albo dodać.</p><ul><li>Wszystko ze Start <b>✓</b></li><li>Drobne zmiany <em>do 60 min / mies.</em></li><li>Backup przez 14 dni <b>✓</b></li><li>Niewykorzystany czas <em>nie przechodzi</em></li><li>Czas reakcji <em>do 2 dni roboczych</em></li></ul><a className="plan-checkout" href="https://buy.stripe.com/3cIcN8eem38Y3X1gSn5J604" aria-label="Wybierz pakiet Care"><span>Wybieram Care</span><Arrow /></a></PlanCard>
+          <PlanCard><p className="plan-no">03 / PRO</p><p className="plan-setup">Najpierw: strona<br /><b>wycena indywidualna</b></p><h3>129 <small>zł / mies. opieka</small></h3><p className="plan-for">Pełna opieka dla firm, których strona ma pracować razem z nimi.</p><ul><li>Wszystko ze Start <b>✓</b></li><li>Drobne zmiany <em>do 120 min / mies.</em></li><li>Priorytet obsługi <b>✓</b></li><li>Backup przez 14 dni <b>✓</b></li><li>Niewykorzystany czas <em>nie przechodzi</em></li></ul><a className="plan-checkout" href="https://buy.stripe.com/aFacN81rAdNC0KP0Tp5J603" aria-label="Wybierz pakiet Pro"><span>Wybieram Pro</span><Arrow /></a></PlanCard>
         </div>
         <p className="plans-legal-note">Każdy pakiet wymaga wcześniejszego Zamówienia z indywidualną ceną wykonania strony. Abonament jest płatny miesięcznie przez Stripe i ma minimalny okres 12 miesięcy. Po tym czasie przechodzi na czas nieokreślony z miesięcznym okresem wypowiedzenia. Szczegóły znajdziesz w <a href="/regulamin">Regulaminie</a>.</p>
       </section>
