@@ -111,6 +111,9 @@ button { font: inherit; }
 
 .visual-lab { position: relative; height: 190svh; background: #08070d; }
 .lab-sticky { position: sticky; top: 0; height: 100svh; overflow: hidden; isolation: isolate; }
+.lab-stage { position: absolute; inset: 0; }
+.lab-visual { position: relative; height: 100%; isolation: isolate; overflow: hidden; }
+.lab-portal { display: none; }
 .flow-field { position: absolute; z-index: -3; inset: 0; background: radial-gradient(circle at 20% 30%, rgba(77,50,255,.9), transparent 42%), radial-gradient(circle at 78% 22%, rgba(255,47,125,.78), transparent 38%), radial-gradient(circle at 70% 78%, rgba(0,217,255,.58), transparent 40%), radial-gradient(circle at 28% 82%, rgba(223,255,0,.48), transparent 38%), #08070d; }
 .lab-sticky::after { position: absolute; z-index: -1; inset: 0; background: radial-gradient(circle at center, transparent 0 24%, rgba(4,3,8,.22) 65%, rgba(4,3,8,.78) 100%); content: ''; pointer-events: none; }
 .lab-grid { position: absolute; z-index: -2; inset: 0; opacity: .18; background-image: linear-gradient(rgba(255,255,255,.13) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.13) 1px, transparent 1px); background-size: 7vw 7vw; mask-image: radial-gradient(circle at center, #000, transparent 78%); }
@@ -284,13 +287,18 @@ button { font: inherit; }
   .manifesto h2 { margin-top: 18vh; font-size: clamp(3.35rem, 15vw, 5.2rem); }
   .manifesto-note { position: static; margin: 15vh 0 0; }
 
-  .visual-lab { height: 145svh; }
-  .lab-grid { background-size: 18vw 18vw; }
-  .lab-kicker { top: 14vh; left: 7vw; }
-  .lab-title { width: 94vw; font-size: clamp(3.55rem, 16vw, 6rem); line-height: .77; transform: translate(-50%, calc(-50% + (var(--lab-scroll) - .5) * -6vh)); }
-  .lab-caption { right: 7vw; bottom: 4vh; width: 62vw; font-size: .67rem; }
+  .visual-lab { height: auto; }
+  .lab-sticky { position: relative; height: auto; overflow: visible; }
+  .lab-stage { position: relative; height: 180svh; }
+  .lab-visual { position: sticky; top: 0; height: 100svh; background: #08070d; }
+  .lab-portal { position: absolute; z-index: -1; top: 50%; left: 50%; display: block; width: 92vw; height: 92vw; border-radius: 50%; background: var(--lime); transform: translate(-50%, -50%); }
+  .lab-grid, .lab-shutters, .lab-kicker { display: none; }
+  .lab-title { width: 94vw; color: #101014; font-size: clamp(3rem, 15vw, 6rem); line-height: 1; letter-spacing: -.055em; transform: translate(-50%, -50%); }
+  .lab-title span { margin-bottom: 22px; font-size: .66em; }
+  .lab-title strong { color: #101014; letter-spacing: -.06em; }
+  .lab-caption { right: auto; left: 7vw; bottom: 7svh; width: 80vw; max-width: 360px; font-size: .85rem; }
 
-  .services { padding: 9vh 7vw 3vh; }
+  .services { position: relative; inset: auto; padding: 64px 7vw; overflow: visible; opacity: 1; pointer-events: auto; }
   .service { padding: 24px 0; grid-template-columns: 12% 1fr auto; gap: 10px; }
   .service h3 { font-size: clamp(2.5rem, 12vw, 4rem); }
   .service p { grid-column: 2 / 4; font-size: .8rem; }
@@ -339,6 +347,15 @@ button { font: inherit; }
   .paper-plane { display: none; }
   .footer-runway { height: auto; }
   .site-footer { position: relative; top: auto; }
+}
+
+@media (max-width: 800px) and (prefers-reduced-motion: reduce) {
+  .visual-lab { height: auto; }
+  .lab-stage { height: 100svh; }
+  .lab-visual { position: relative; }
+  .lab-title { transform: translate(-50%, -50%); }
+  .lab-title, .lab-title strong { color: var(--lime); }
+  .lab-portal { display: none; }
 }
 
 @media print {

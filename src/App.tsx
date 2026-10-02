@@ -131,6 +131,35 @@ function MarketingSite() {
   }, [])
 
   useEffect(() => {
+    const section = lab.current
+    if (!section) return
+    const media = gsap.matchMedia()
+    media.add('(max-width: 800px) and (prefers-reduced-motion: no-preference)', () => {
+      const portal = section.querySelector('.lab-portal')
+      const title = section.querySelector('.lab-title')
+      const lead = section.querySelector('.lab-title span')
+      const caption = section.querySelector('.lab-caption')
+      gsap.set(portal, { scale: 1 })
+      gsap.timeline({
+        scrollTrigger: {
+          trigger: section.querySelector('.lab-stage'),
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: 0.65,
+          invalidateOnRefresh: true,
+        },
+      })
+        .to(portal, { scale: 6, duration: 1, ease: 'power2.inOut' }, 0)
+        .to(title, { scale: 1.12, duration: 1, ease: 'power2.inOut' }, 0)
+        .to(lead, { y: -24, opacity: 0, duration: 0.3 }, 0.25)
+        .to(caption, { opacity: 0, duration: 0.15 }, 0.1)
+        .set(caption, { color: '#101014' }, 0.6)
+        .to(caption, { opacity: 1, duration: 0.2 }, 0.6)
+    }, section)
+    return () => media.revert()
+  }, [])
+
+  useEffect(() => {
     const cards = plans.current?.querySelectorAll('.plan-entry')
     if (!cards?.length) return
 
@@ -181,7 +210,7 @@ function MarketingSite() {
       <section className="manifesto" id="studio"><p className="eyebrow"><span /> internet pełen jest poprawnych stron</p><h2>My robimy te,<br />które zostają<br /><em>w głowie.</em></h2><p className="manifesto-note">Strategia, design, kod i opieka.<br />Jeden zespół. Zero przekładania odpowiedzialności.</p></section>
 
       <section className="visual-lab" ref={lab}>
-        <div className="lab-sticky"><div className="flow-field" aria-hidden="true" /><div className="lab-grid" aria-hidden="true" /><p className="eyebrow lab-kicker"><span /> mikam visual lab / 2026</p><h2 className="lab-title"><span>Nie oglądasz.</span><strong>Wchodzisz.</strong></h2><p className="lab-caption">Płynne przejścia, reagująca grafika i typografia, która prowadzi wzrok — bez poświęcania czytelności i szybkości.</p><div className="lab-shutters" aria-hidden="true"><i className="lab-shutter--top" /><i className="lab-shutter--right" /><i className="lab-shutter--bottom" /><i className="lab-shutter--left" /></div><section className="services" id="co-robimy"><div className="section-head"><p className="eyebrow"><span /> od pierwszego ruchu do stałej opieki</p><p>(01—04)</p></div>{services.map(([number, title, description]) => <article className="service" key={number}><span>{number}</span><h3>{title}</h3><p>{description}</p><b>↗</b></article>)}</section></div>
+        <div className="lab-sticky"><div className="lab-stage"><div className="lab-visual"><div className="lab-portal" aria-hidden="true" /><div className="flow-field" aria-hidden="true" /><div className="lab-grid" aria-hidden="true" /><p className="eyebrow lab-kicker"><span /> mikam visual lab / 2026</p><h2 className="lab-title"><span>Nie oglądasz.</span><strong>Wchodzisz.</strong></h2><p className="lab-caption">Płynne przejścia, reagująca grafika i typografia, która prowadzi wzrok — bez poświęcania czytelności i szybkości.</p><div className="lab-shutters" aria-hidden="true"><i className="lab-shutter--top" /><i className="lab-shutter--right" /><i className="lab-shutter--bottom" /><i className="lab-shutter--left" /></div></div></div><section className="services" id="co-robimy"><div className="section-head"><p className="eyebrow"><span /> od pierwszego ruchu do stałej opieki</p><p>(01—04)</p></div>{services.map(([number, title, description]) => <article className="service" key={number}><span>{number}</span><h3>{title}</h3><p>{description}</p><b>↗</b></article>)}</section></div>
       </section>
 
       <section className="plans" id="plany" ref={plans}>
