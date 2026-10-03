@@ -158,7 +158,9 @@ button { font: inherit; }
 .plan-card:focus-within { outline: 2px solid currentColor; outline-offset: 5px; }
 @media (min-width: 801px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .plan-grid { min-height: 690px; align-items: start; }
-  .plan-card { min-height: 420px; }
+  .plan-card { --plan-rest: 1; min-height: calc(420px + var(--plan-rest) * 150px); }
+  .plan-entry .plan-card h3 { font-size: calc(clamp(4.1rem, 5.6vw, 7rem) * (1 + var(--plan-rest) * .5)); }
+  .plan-card .plan-for { max-width: calc(290px + var(--plan-rest) * 130px); font-size: calc(.93rem * (1 + var(--plan-rest) * .35)); }
 }
 .plan-no { margin: 0; font: .7rem 'DM Mono'; }
 .plan-no mark { float: right; padding: 5px 7px; background: #111; color: var(--lime); font-size: .55rem; text-transform: uppercase; }

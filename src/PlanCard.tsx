@@ -15,6 +15,7 @@ export function PlanCard({ children, featured = false }: { children: ReactNode; 
       gsap.set(items, { y: 12, opacity: 0 })
       const expansion = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } })
         .to(card, { y: featured ? -36 : -12, duration: 0.35 }, 0)
+        .to(card, { '--plan-rest': 0, duration: 0.35 }, 0)
         .to(details, { height: 'auto', opacity: 1, marginTop: 28, marginBottom: 25, duration: 0.45 }, 0)
         .to(items, { y: 0, opacity: 1, duration: 0.25, stagger: 0.035 }, 0.1)
       const open = () => { expansion.timeScale(1).play() }
