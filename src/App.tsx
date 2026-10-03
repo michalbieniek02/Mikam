@@ -257,10 +257,11 @@ function MarketingSite() {
         </svg>
         <svg ref={plane} className="paper-plane" viewBox="0 0 200 110" aria-hidden="true">
           <g className="paper-plane__body">
-            <path className="paper-plane__top" d="M5 69 190 7 116 59Z" />
-            <path className="paper-plane__bottom" d="M5 69 165 47 121 100Z" />
-            <path className="paper-plane__fold" d="M116 59 190 7 157 50Z" />
-            <path className="paper-plane__spine" d="M5 69 116 59 121 100Z" />
+            <path className="paper-plane__top" d="M12 8 190 55 65 53 46 38Z" />
+            <path className="paper-plane__spine" d="M65 53 190 55 65 65 57 79Z" />
+            <path className="paper-plane__bottom" d="M32 100 190 55 65 65Z" />
+            <path className="paper-plane__fold" d="M12 8 190 55 65 53Z" />
+            <path className="paper-plane__crease" d="M12 8 65 53 190 55M32 100 65 65 190 55" />
           </g>
         </svg>
         <div className="footer-brand"><a className="logo" href="#top">MIKAM<span>®</span></a><p>MIKAM — Michał Bieniek<br />działalność nierejestrowana<br />ul. Mieszka I 8, 05-300 Mińsk Mazowiecki</p><a href="mailto:kontakt@mikam.cloud">kontakt@mikam.cloud</a></div><div className="footer-legal" aria-label="Dokumenty prawne"><a href="/regulamin">Regulamin</a><a href="/polityka-prywatnosci">Polityka prywatności i cookies</a><a href="/odstapienie">Odstąpienie od umowy</a><a href="/zglos-nielegalne-tresci">Zgłoś nielegalną treść</a></div><BackToTop /><p className="footer-copy">© 2026 · mikam.cloud</p>
