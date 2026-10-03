@@ -1,12 +1,11 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { MotionPathPlugin } from 'gsap/MotionPathPlugin'
 import { LegalPage, legalPaths } from './LegalPages'
 import { SmoothCursor } from './SmoothCursor'
 import { PlanCard } from './PlanCard'
 
-gsap.registerPlugin(ScrollTrigger, MotionPathPlugin)
+gsap.registerPlugin(ScrollTrigger)
 
 const services = [
   ['01', 'Kierunek', 'Wyszukujemy firmę, łapiemy jej charakter i budujemy pierwszy kierunek bez tygodni briefowania.'],
@@ -30,9 +29,6 @@ function MarketingSite() {
   const lab = useRef<HTMLElement>(null)
   const nav = useRef<HTMLElement>(null)
   const plans = useRef<HTMLElement>(null)
-  const flight = useRef<HTMLElement>(null)
-  const flightPath = useRef<SVGPathElement>(null)
-  const plane = useRef<SVGSVGElement>(null)
 
   useEffect(() => {
     let frame = 0
@@ -82,51 +78,6 @@ function MarketingSite() {
       if (frame) cancelAnimationFrame(frame)
       window.removeEventListener('scroll', update)
       window.removeEventListener('resize', measure)
-    }
-  }, [])
-
-  useEffect(() => {
-    const section = flight.current
-    const path = flightPath.current
-    const flyer = plane.current
-    if (!section || !path || !flyer) return
-    const body = flyer.querySelector<SVGGElement>('.paper-plane__body')
-
-    const media = gsap.matchMedia()
-    const context = gsap.context(() => {
-      media.add('(prefers-reduced-motion: no-preference)', () => {
-        gsap.set(flyer, { autoAlpha: 0 })
-        gsap.set(body, { scale: 0.62 })
-        gsap.timeline({
-          scrollTrigger: {
-            trigger: section,
-            start: 'top bottom',
-            end: 'bottom bottom',
-            scrub: 1.6,
-            invalidateOnRefresh: true,
-          },
-        })
-          .to(flyer, { autoAlpha: 1, duration: 0.06 }, 0)
-          .to(flyer, {
-            duration: 1,
-            ease: 'none',
-            motionPath: { path, align: path, alignOrigin: [0.5, 0.5], autoRotate: true },
-          }, 0)
-          .to(body, {
-            duration: 1,
-            ease: 'none',
-            keyframes: [
-              { scale: 1.05 },
-              { scale: 1.12 },
-              { scale: 0.68 },
-            ],
-          }, 0)
-      })
-    }, section)
-
-    return () => {
-      media.revert()
-      context.revert()
     }
   }, [])
 
@@ -250,20 +201,8 @@ function MarketingSite() {
 
       <section className="cta" id="kontakt"><div className="cta-glow" aria-hidden="true" /><p className="eyebrow"><span /> masz firmę, my mamy pomysł</p><h2>Nie pytaj,<br />czy da się<br /><em>ładniej.</em></h2><a href="mailto:kontakt@mikam.cloud" className="email">kontakt@mikam.cloud <span>↗</span></a><p className="cta-side">Napisz. Zobaczymy, co da się zrobić z Twoją marką, zanim cokolwiek kupisz.</p></section>
 
-      <section className="footer-runway" ref={flight} aria-label="Zakończenie strony">
+      <section className="footer-runway" aria-label="Zakończenie strony">
       <footer className="site-footer">
-        <svg className="footer-flight" viewBox="0 0 1000 420" preserveAspectRatio="none" aria-hidden="true">
-          <path ref={flightPath} d="M-80 350 C110 350 200 300 275 205 C350 110 330 20 455 18 C600 15 650 155 585 245 C510 350 365 315 350 215 C335 110 480 70 570 145 C670 230 700 350 850 350" />
-        </svg>
-        <svg ref={plane} className="paper-plane" viewBox="0 0 200 110" aria-hidden="true">
-          <g className="paper-plane__body">
-            <path className="paper-plane__top" d="M12 8 190 55 65 53 46 38Z" />
-            <path className="paper-plane__spine" d="M65 53 190 55 65 65 57 79Z" />
-            <path className="paper-plane__bottom" d="M32 100 190 55 65 65Z" />
-            <path className="paper-plane__fold" d="M12 8 190 55 65 53Z" />
-            <path className="paper-plane__crease" d="M12 8 65 53 190 55M32 100 65 65 190 55" />
-          </g>
-        </svg>
         <div className="footer-brand"><a className="logo" href="#top">MIKAM<span>®</span></a><p>MIKAM — Michał Bieniek<br />działalność nierejestrowana<br />ul. Mieszka I 8, 05-300 Mińsk Mazowiecki</p><a href="mailto:kontakt@mikam.cloud">kontakt@mikam.cloud</a></div><div className="footer-legal" aria-label="Dokumenty prawne"><a href="/regulamin">Regulamin</a><a href="/polityka-prywatnosci">Polityka prywatności i cookies</a><a href="/odstapienie">Odstąpienie od umowy</a><a href="/zglos-nielegalne-tresci">Zgłoś nielegalną treść</a></div><BackToTop /><p className="footer-copy">© 2026 · mikam.cloud</p>
       </footer>
       </section>

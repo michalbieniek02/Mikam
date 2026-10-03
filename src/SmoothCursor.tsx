@@ -21,19 +21,31 @@ export function SmoothCursor() {
       let visible = false
       let hovering = false
       let pressed = false
+      let spinTween: gsap.core.Tween | null = null
 
       const resizeRing = () => gsap.to(follower, {
-        scale: pressed ? 0.75 : hovering ? 1.65 : 1,
-        backgroundColor: hovering ? 'rgba(223,255,0,0.14)' : 'rgba(223,255,0,0)',
+        scale: pressed ? 0.75 : 1,
         duration: 0.2,
         ease: 'power3.out',
         overwrite: 'auto',
       })
+      const setHovering = (active: boolean) => {
+        if (active === hovering) return
+        hovering = active
+        spinTween?.kill()
+        spinTween = active
+          ? gsap.to(follower, { rotation: '+=360', duration: 1.1, ease: 'none', repeat: -1 })
+          : gsap.to(follower, { rotation: '+=245', duration: 3, ease: 'power3.out' })
+      }
       const hide = () => {
         visible = false
         pressed = false
+        hovering = false
+        spinTween?.kill()
+        spinTween = null
         document.documentElement.classList.remove('has-smooth-cursor')
         gsap.set(elements, { autoAlpha: 0 })
+        gsap.set(follower, { rotation: 0, scale: 1 })
       }
       const move = (event: PointerEvent) => {
         if (event.pointerType !== 'mouse') return hide()
@@ -41,7 +53,7 @@ export function SmoothCursor() {
         if (target?.closest('input, textarea, select, [contenteditable="true"], iframe')) return hide()
         const active = Boolean(target?.closest('a, button:not(:disabled), [role="button"]'))
         if (active !== hovering || !visible) {
-          hovering = active
+          setHovering(active)
           resizeRing()
         }
         if (!visible) {
@@ -81,6 +93,7 @@ export function SmoothCursor() {
         document.documentElement.removeEventListener('pointerleave', hide)
         document.removeEventListener('visibilitychange', onVisibility)
         document.documentElement.classList.remove('has-smooth-cursor')
+        spinTween?.kill()
         gsap.killTweensOf(elements)
       }
     })
