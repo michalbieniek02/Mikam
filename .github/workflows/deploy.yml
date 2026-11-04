@@ -30,6 +30,8 @@ jobs:
 
       - name: Build production site
         run: npm run build
+        env:
+          VITE_FILESHARE_ORIGIN: https://fileshare.mikam.cloud
 
       - name: Upload to OVH shared hosting
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5

@@ -5,12 +5,17 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "server": "node --env-file-if-exists=.env server/index.mjs",
+    "start": "node --env-file-if-exists=.env server/index.mjs",
+    "test:fileshare": "node --test server/fileshare.test.mjs",
     "build": "tsc -b && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",
+    "express": "^5.3.0",
     "gsap": "^3.15.0",
+    "mime-types": "^3.0.2",
     "react": "latest",
     "react-dom": "latest",
     "styled-components": "^6.5.3",
@@ -18,6 +23,8 @@
     "vite": "latest"
   },
   "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/mime-types": "^3.0.1",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest"

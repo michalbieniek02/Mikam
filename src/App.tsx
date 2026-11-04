@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { LegalPage, legalPaths } from './LegalPages'
 import { SmoothCursor } from './SmoothCursor'
 import { PlanCard } from './PlanCard'
+import { FileShare } from './FileShare'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -212,6 +213,7 @@ function MarketingSite() {
 
 function App() {
   const path = window.location.pathname.replace(/\/$/, '') || '/'
+  if (path === '/fileshare') return <FileShare />
   return legalPaths.has(path) ? <LegalPage path={path} /> : <MarketingSite />
 }
 
