@@ -34,8 +34,8 @@ test('private storage preserves originals, ranges, names and files after restart
     await start()
     assert.equal((await fetch(base)).status, 401)
     assert.equal((await fetch(`${base}/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: 'wrong' }) })).status, 401)
-    async function login() {
-      const response = await fetch(`${base}/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: 'test-password' }) })
+    async function login(value = 'test-password') {
+      const response = await fetch(`${base}/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: value }) })
       assert.equal(response.status, 200)
       return response.headers.get('set-cookie').split(';')[0]
     }
@@ -84,6 +84,15 @@ test('private storage preserves originals, ranges, names and files after restart
     assert.deepEqual(Buffer.from(await (await fetch(`${base}/pliki/${entries[0].id}`, { headers: { Cookie: cookie } })).arrayBuffer()), original)
     await stop(); await start(); cookie = await login()
     assert.equal((await fetch(deletedUrl, { headers: { Cookie: cookie } })).status, 404)
+    const passwordUrl = `${base}/password`
+    const change = body => fetch(passwordUrl, { method: 'POST', headers: { Cookie: cookie, 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+    assert.equal((await change({ currentPassword: 'wrong', newPassword: 'new-password' })).status, 403)
+    assert.equal((await change({ currentPassword: 'test-password', newPassword: 'short' })).status, 400)
+    assert.equal((await change({ currentPassword: 'test-password', newPassword: 'new-password' })).status, 200)
+    assert.equal((await fetch(base, { headers: { Cookie: cookie } })).status, 401)
+    assert.equal((await fetch(`${base}/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: 'test-password' }) })).status, 401)
+    cookie = await login('new-password')
+    await stop(); await start(); cookie = await login('new-password')
     assert.equal((await fetch(`${base}/logout`, { method: 'POST', headers: { Cookie: cookie } })).status, 200)
     assert.equal((await fetch(base, { headers: { Cookie: cookie } })).status, 401)
   } finally {

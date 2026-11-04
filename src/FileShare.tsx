@@ -68,6 +68,9 @@ export function FileShare() {
   const [preview, setPreview] = useState<StoredFile | null>(null)
   const [mediaError, setMediaError] = useState(false)
   const [deleting, setDeleting] = useState<string | null>(null)
+  const [deleteCandidate, setDeleteCandidate] = useState<StoredFile | null>(null)
+  const [deleteError, setDeleteError] = useState('')
+  const deleteDialog = useRef<HTMLDialogElement>(null)
   const input = useRef<HTMLInputElement>(null)
   const dialog = useRef<HTMLDialogElement>(null)
   const activeRequest = useRef<XMLHttpRequest | null>(null)
@@ -104,16 +107,21 @@ export function FileShare() {
     } catch (err) { setError(err instanceof Error ? err.message : 'Nie udało się zalogować.') }
     finally { setLoading(false) }
   }
+  useEffect(() => {
+    if (deleteCandidate) deleteDialog.current?.showModal()
+    else deleteDialog.current?.close()
+  }, [deleteCandidate])
   async function deleteFile(file: StoredFile) {
-    if (deleting || !window.confirm(`Usunąć „${file.name}”? Plik zostanie trwale usunięty z serwera.`)) return
-    setDeleting(file.id); setError('')
+    if (deleting) return
+    setDeleting(file.id); setDeleteError('')
     try {
       const response = await apiFetch(fileUrl(file), { method: 'DELETE' })
-      if (response.status === 401) { setAuthorized(false); throw new Error('Sesja wygasła. Zaloguj się ponownie.') }
+      if (response.status === 401) { setAuthorized(false); setDeleteCandidate(null); setError('Sesja wygasła. Zaloguj się ponownie.'); return }
       if (!response.ok && response.status !== 404) throw new Error('Nie udało się usunąć pliku. Spróbuj ponownie.')
       setFiles(previous => previous.filter(item => item.id !== file.id))
       if (preview?.id === file.id) setPreview(null)
-    } catch (err) { setError(err instanceof Error ? err.message : 'Nie udało się usunąć pliku.') }
+      setDeleteCandidate(null)
+    } catch (err) { setDeleteError(err instanceof Error ? err.message : 'Nie udało się usunąć pliku.') }
     finally { setDeleting(null) }
   }
   async function upload(selected: FileList | File[]) {
@@ -162,10 +170,13 @@ export function FileShare() {
       {queue.length > 0 && <section className="fs-queue" aria-label="Postęp przesyłania" aria-live="polite">{queue.map((item, index) => <div className="fs-queue-item" key={index}><span>{item.name}</span><small className={item.status === 'error' ? 'fs-error' : ''}>{item.status === 'done' ? 'Zapisano ✓' : item.status === 'error' ? item.error : item.status === 'waiting' ? 'W kolejce' : item.progress === 100 ? 'Zapisywanie…' : `${item.progress}%`}</small>{item.status === 'uploading' && <progress value={item.progress} max={100} aria-label={`Przesyłanie ${item.name}`} />}</div>)}{!uploading && <button className="fs-text-button" onClick={() => setQueue([])}>Ukryj postęp ×</button>}</section>}
       {error && <p className="fs-error" role="alert">{error} <button className="fs-text-button" onClick={() => refresh().then(() => setError('')).catch(err => setError(err.message))}>Spróbuj ponownie</button></p>}
       <section className="fs-library"><div className="fs-library-head"><div><span className="fs-kicker">BIBLIOTEKA / {String(folders.findIndex(item => item.id === folder) + 1).padStart(2, '0')}</span><h2>{activeFolder.label} <small>{visible.length}</small></h2></div><label className="fs-search"><span>Szukaj</span><input type="search" placeholder="Nazwa pliku…" value={query} onChange={event => setQuery(event.target.value)} /></label></div>
-      {visible.length === 0 ? <div className="fs-empty"><Icon name="folder" /><h3>{query ? 'Nie znaleziono plików.' : 'Miejsce na coś Twojego.'}</h3><p>{query ? 'Spróbuj wpisać inną nazwę.' : `Dodaj pierwsze pliki do folderu ${activeFolder.label.toLocaleLowerCase('pl')}.`}</p></div> : <div className="fs-grid">{visible.map(file => <article className="fs-file" key={file.id}>{file.folder === 'pliki' ? <div className="fs-thumbnail"><Icon name="file" /><span>{file.name.split('.').pop()?.toUpperCase()}</span></div> : <button className="fs-thumbnail" aria-label={`Podgląd: ${file.name}`} onClick={() => setPreview(file)}>{file.folder === 'zdjecia' ? <ImageThumbnail file={file} /> : file.folder === 'filmy' ? <VideoThumbnail file={file} /> : <><Icon name="music" /><span>Posłuchaj ↗</span></>}</button>}<div className="fs-file-info"><h3 title={file.name}>{file.name}</h3><p>{bytes(file.size)} <span>·</span> {new Date(file.createdAt).toLocaleDateString('pl-PL')}</p><div>{file.folder !== 'pliki' && <button className="fs-text-button" onClick={() => setPreview(file)}>Podgląd ↗</button>}<a href={`${fileUrl(file)}?download=1`}>Pobierz ↓</a></div><button className="fs-delete" disabled={deleting !== null} aria-label={`Usuń: ${file.name}`} onClick={() => void deleteFile(file)}><Icon name="trash" />{deleting === file.id ? 'Usuwanie…' : 'Usuń'}</button></div></article>)}</div>}
+      {visible.length === 0 ? <div className="fs-empty"><Icon name="folder" /><h3>{query ? 'Nie znaleziono plików.' : 'Miejsce na coś Twojego.'}</h3><p>{query ? 'Spróbuj wpisać inną nazwę.' : `Dodaj pierwsze pliki do folderu ${activeFolder.label.toLocaleLowerCase('pl')}.`}</p></div> : <div className="fs-grid">{visible.map(file => <article className="fs-file" key={file.id}>{file.folder === 'pliki' ? <div className="fs-thumbnail"><Icon name="file" /><span>{file.name.split('.').pop()?.toUpperCase()}</span></div> : <button className="fs-thumbnail" aria-label={`Podgląd: ${file.name}`} onClick={() => setPreview(file)}>{file.folder === 'zdjecia' ? <ImageThumbnail file={file} /> : file.folder === 'filmy' ? <VideoThumbnail file={file} /> : <><Icon name="music" /><span>Posłuchaj ↗</span></>}</button>}<div className="fs-file-info"><h3 title={file.name}>{file.name}</h3><p>{bytes(file.size)} <span>·</span> {new Date(file.createdAt).toLocaleDateString('pl-PL')}</p><div>{file.folder !== 'pliki' && <button className="fs-text-button" onClick={() => setPreview(file)}>Podgląd ↗</button>}<a href={`${fileUrl(file)}?download=1`}>Pobierz ↓</a></div><button className="fs-delete" disabled={deleting !== null} aria-label={`Usuń: ${file.name}`} onClick={() => { setDeleteError(''); setDeleteCandidate(file) }}><Icon name="trash" />{deleting === file.id ? 'Usuwanie…' : 'Usuń'}</button></div></article>)}</div>}
       <p className="fs-format-note">Podgląd zależy od formatów obsługiwanych przez Twoją przeglądarkę. Każdy plik możesz pobrać w oryginale.</p></section>
     </>}
     <footer className="fs-footer"><span>MIKAM / FILESHARE</span><span>Twoje pliki. Pełna jakość.</span></footer>
+    <dialog className="fs-delete-dialog" ref={deleteDialog} aria-labelledby="fs-delete-title" aria-describedby="fs-delete-description" onCancel={event => { if (deleting) event.preventDefault(); else setDeleteCandidate(null) }} onClose={() => { if (!deleting) setDeleteCandidate(null) }} onClick={event => { if (event.target === event.currentTarget && !deleting) setDeleteCandidate(null) }}>{deleteCandidate && <>
+      <span className="fs-delete-dialog-icon"><Icon name="trash" /></span><p className="fs-kicker">TWOJA BIBLIOTEKA / USUWANIE</p><h2 id="fs-delete-title">Usunąć ten plik?</h2><p className="fs-delete-name">{deleteCandidate.name}</p><p id="fs-delete-description">Plik zostanie trwale usunięty z Twojej biblioteki i serwera. Tej operacji nie można cofnąć.</p>{deleteError && <p className="fs-error" role="alert">{deleteError}</p>}<footer><button autoFocus className="fs-delete-cancel" disabled={deleting !== null} onClick={() => setDeleteCandidate(null)}>Zostaw plik</button><button className="fs-delete-confirm" disabled={deleting !== null} onClick={() => void deleteFile(deleteCandidate)}>{deleting ? 'Usuwanie…' : 'Usuń plik'}</button></footer>
+    </>}</dialog>
     <dialog className="fs-preview" ref={dialog} onClose={() => setPreview(null)} onClick={event => { if (event.target === event.currentTarget) setPreview(null) }}>{preview && <><header><h2>{preview.name}</h2><button className="fs-text-button" onClick={() => setPreview(null)} aria-label="Zamknij podgląd">Zamknij ×</button></header><div className="fs-media" key={preview.id}>{mediaError ? <p>Przeglądarka nie obsługuje tego formatu. Pobierz oryginał, aby go otworzyć.</p> : preview.folder === 'zdjecia' ? <img src={fileUrl(preview)} alt={preview.name} onError={() => setMediaError(true)} /> : preview.folder === 'filmy' ? <video controls autoPlay playsInline preload="metadata" src={fileUrl(preview)} onError={() => setMediaError(true)} /> : <div className="fs-audio"><Icon name="music" /><audio controls autoPlay preload="metadata" src={fileUrl(preview)} onError={() => setMediaError(true)} /></div>}</div><footer><span>{bytes(preview.size)} · Oryginalna jakość</span><a className="fs-primary" href={`${fileUrl(preview)}?download=1`}>Pobierz oryginał ↓</a></footer></>}</dialog>
   </main>
 }

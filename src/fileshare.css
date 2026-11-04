@@ -71,6 +71,19 @@
 .fs-delete { display: flex; align-items: center; justify-content: center; gap: 7px; width: 100%; padding: 10px; margin-top: 9px; border: 1px solid #543b3a; border-radius: 3px; background: transparent; color: #ffada4; font-size: 11px; }
 .fs-delete svg { width: 14px; height: 14px; }
 .fs-delete:hover { border-color: #ffada4; background: #ffada40b; }
+.fs-delete-dialog { width: min(440px, calc(100vw - 32px)); padding: 30px; color: #eee; background: #17191b; border: 1px solid #45484a; border-radius: 9px; box-shadow: 0 24px 100px #0009; }
+.fs-delete-dialog::backdrop { background: #050607c9; backdrop-filter: blur(5px); }
+.fs-delete-dialog-icon { display: grid; place-items: center; width: 48px; height: 48px; color: #ffada4; background: #ffada40d; border: 1px solid #ffada430; border-radius: 50%; margin-bottom: 25px; }
+.fs-delete-dialog-icon svg { width: 23px; height: 23px; }
+.fs-delete-dialog h2 { font-size: 30px; font-weight: 500; letter-spacing: -.05em; margin: 15px 0; }
+.fs-delete-dialog p:not(.fs-kicker) { font-size: 12px; color: #a4a6a7; line-height: 1.8; }
+.fs-delete-dialog p.fs-delete-name { color: #eee; font-size: 14px; overflow-wrap: anywhere; padding: 12px 14px; border: 1px solid #35383b; border-radius: 3px; background: #101112; }
+.fs-delete-dialog footer { display: flex; gap: 10px; margin-top: 27px; padding-top: 22px; border-top: 1px solid #35383b; }
+.fs-delete-dialog footer button { flex: 1; padding: 13px 10px; font-size: 12px; border-radius: 3px; }
+.fs-delete-cancel { background: #222527; color: #eee; border: 1px solid #45484a; }
+.fs-delete-cancel:hover { border-color: var(--lime); }
+.fs-delete-confirm { background: #ffada4; color: #241514; border: 1px solid #ffada4; font-weight: 700; }
+.fs-delete-confirm:hover { background: #ffc5bf; }
 .fs-queue { padding: 18px; background: #191a1c; margin-top: 14px; border: 1px solid #343537; border-radius: 4px; }
 .fs-queue-item { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding: 9px 0; font-size: 12px; }
 .fs-queue-item>span { overflow-wrap: anywhere; }

@@ -1,5 +1,5 @@
 import express from 'express'
-import { randomBytes, randomUUID, createHash, timingSafeEqual } from 'node:crypto'
+import { randomBytes, randomUUID, scryptSync, timingSafeEqual } from 'node:crypto'
 import { mkdir, readdir, readFile, writeFile, rename, rm, stat, statfs } from 'node:fs/promises'
 import { createWriteStream } from 'node:fs'
 import { pipeline } from 'node:stream/promises'
@@ -29,7 +29,16 @@ const sessions = new Map()
 const attempts = new Map()
 const cookieName = 'mikam_fileshare'
 const cookieOptions = { httpOnly: true, sameSite: 'strict', secure: process.env.NODE_ENV === 'production', path: '/api/fileshare', maxAge: 86400000 }
-const digest = value => createHash('sha256').update(value).digest()
+const credentialPath = path.join(storage, '.password.json')
+const makeCredential = value => {
+  const salt = randomBytes(16).toString('hex')
+  return { salt, hash: scryptSync(value, salt, 32).toString('hex') }
+}
+let credential
+try { credential = JSON.parse(await readFile(credentialPath, 'utf8')) }
+catch (error) { if (error.code !== 'ENOENT') throw error; credential = makeCredential(password) }
+if (!/^[a-f0-9]{32}$/.test(credential.salt) || !/^[a-f0-9]{64}$/.test(credential.hash)) throw new Error('Niepoprawny plik hasła')
+const matchesPassword = value => typeof value === 'string' && value.length <= 256 && timingSafeEqual(scryptSync(value, credential.salt, 32), Buffer.from(credential.hash, 'hex'))
 setInterval(() => {
   for (const [key, expiry] of sessions) if (expiry < Date.now()) sessions.delete(key)
   for (const [key, attempt] of attempts) if (attempt.until < Date.now()) attempts.delete(key)
@@ -53,7 +62,7 @@ app.post('/api/fileshare/login', express.json({ limit: '2kb' }), (req, res) => {
   const key = req.socket.remoteAddress
   const attempt = attempts.get(key) || { count: 0, until: Date.now() + 900000 }
   if (attempt.count >= 10) return res.status(429).json({ error: 'Zbyt wiele prób. Spróbuj za 15 minut.' })
-  if (typeof req.body?.password !== 'string' || !timingSafeEqual(digest(req.body.password), digest(password))) {
+  if (!matchesPassword(req.body?.password)) {
     attempt.count++; attempts.set(key, attempt)
     return res.status(401).json({ error: 'Nieprawidłowe hasło.' })
   }
@@ -70,6 +79,18 @@ app.use('/api/fileshare', (req, res, next) => {
 })
 app.post('/api/fileshare/logout', (req, res) => {
   sessions.delete(req.sessionToken)
+  res.clearCookie(cookieName, cookieOptions).json({ ok: true })
+})
+app.post('/api/fileshare/password', express.json({ limit: '2kb' }), async (req, res) => {
+  if (!matchesPassword(req.body?.currentPassword)) return res.status(403).json({ error: 'Nieprawidłowe aktualne hasło.' })
+  const nextPassword = req.body?.newPassword
+  if (typeof nextPassword !== 'string' || nextPassword.length < 8 || nextPassword.length > 256) return res.status(400).json({ error: 'Hasło musi mieć od 8 do 256 znaków.' })
+  const nextCredential = makeCredential(nextPassword)
+  const temporary = `${credentialPath}.${randomUUID()}.part`
+  await writeFile(temporary, JSON.stringify(nextCredential), { mode: 0o600, flag: 'wx' })
+  await rename(temporary, credentialPath)
+  credential = nextCredential
+  sessions.clear()
   res.clearCookie(cookieName, cookieOptions).json({ ok: true })
 })
 async function listFiles(folder) {
