@@ -12,7 +12,7 @@ type Folder = typeof folders[number]['id']
 type StoredFile = { id: string; folder: Folder; name: string; type: string; size: number; createdAt: string }
 type QueueItem = { name: string; progress: number; status: 'waiting' | 'uploading' | 'done' | 'error'; error?: string }
 function Icon({ name }: { name: string }) {
-  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{name === 'video' ? <><rect x="3" y="5" width="18" height="14" rx="3" /><path d="m10 9 5 3-5 3Z" /></> : name === 'image' ? <><rect x="3" y="3" width="18" height="18" rx="3" /><circle cx="9" cy="9" r="1.5" /><path d="m4 18 5-5 4 4 3-3 5 5" /></> : name === 'music' ? <><path d="M9 18V5l11-2v13M9 9l11-2" /><ellipse cx="6" cy="18" rx="3" ry="3" /><ellipse cx="17" cy="16" rx="3" ry="3" /></> : name === 'upload' ? <><path d="M12 16V3m-5 5 5-5 5 5M4 16v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4" /></> : name === 'folder' ? <path d="M3 7V5a2 2 0 0 1 2-2h5l3 4h6a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z" /> : <><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" /><path d="M14 2v6h6M8 13h8M8 17h5" /></>}</svg>
+  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{name === 'trash' ? <><path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7M14 10v7" /></> : name === 'video' ? <><rect x="3" y="5" width="18" height="14" rx="3" /><path d="m10 9 5 3-5 3Z" /></> : name === 'image' ? <><rect x="3" y="3" width="18" height="18" rx="3" /><circle cx="9" cy="9" r="1.5" /><path d="m4 18 5-5 4 4 3-3 5 5" /></> : name === 'music' ? <><path d="M9 18V5l11-2v13M9 9l11-2" /><ellipse cx="6" cy="18" rx="3" ry="3" /><ellipse cx="17" cy="16" rx="3" ry="3" /></> : name === 'upload' ? <><path d="M12 16V3m-5 5 5-5 5 5M4 16v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4" /></> : name === 'folder' ? <path d="M3 7V5a2 2 0 0 1 2-2h5l3 4h6a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z" /> : <><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" /><path d="M14 2v6h6M8 13h8M8 17h5" /></>}</svg>
 }
 function bytes(value: number) {
   if (value === 0) return '0 B'
@@ -22,6 +22,36 @@ function bytes(value: number) {
 const api = `${(import.meta.env.VITE_FILESHARE_ORIGIN || '').replace(/\/$/, '')}/api/fileshare`
 const apiFetch = (url: string, options?: RequestInit) => fetch(url, { ...options, credentials: 'include' })
 const fileUrl = (file: StoredFile) => `${api}/${file.folder}/${file.id}`
+
+function ImageThumbnail({ file }: { file: StoredFile }) {
+  const [failed, setFailed] = useState(false)
+  return failed ? <><Icon name="image" /><span>Otwórz zdjęcie ↗</span></> : <img src={fileUrl(file)} alt={file.name} loading="lazy" onError={() => setFailed(true)} />
+}
+
+function VideoThumbnail({ file }: { file: StoredFile }) {
+  const element = useRef<HTMLVideoElement>(null)
+  const [active, setActive] = useState(false)
+  const [failed, setFailed] = useState(false)
+  const [ready, setReady] = useState(false)
+  useEffect(() => {
+    const video = element.current
+    if (!video) return
+    const observer = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) { setActive(true); observer.disconnect() }
+    }, { rootMargin: '200px' })
+    observer.observe(video)
+    return () => observer.disconnect()
+  }, [])
+  return <>
+    {!failed && <video ref={element} className={`fs-video-frame ${ready ? 'is-ready' : ''}`} src={active ? fileUrl(file) : undefined} preload="metadata" muted playsInline tabIndex={-1} aria-hidden="true"
+      onLoadedMetadata={event => {
+        const video = event.currentTarget
+        if (Number.isFinite(video.duration) && video.duration > 0) video.currentTime = Math.min(1, video.duration / 2)
+      }} onLoadedData={() => setReady(true)} onSeeked={() => setReady(true)} onError={() => setFailed(true)} />}
+    {(!ready || failed) && <span className="fs-video-fallback"><Icon name="video" /><span>{failed ? 'Otwórz film ↗' : 'Wczytywanie klatki…'}</span></span>}
+    {ready && !failed && <span className="fs-video-play"><Icon name="video" /></span>}
+  </>
+}
 
 export function FileShare() {
   const [authorized, setAuthorized] = useState(false)
@@ -37,6 +67,7 @@ export function FileShare() {
   const [dragging, setDragging] = useState(false)
   const [preview, setPreview] = useState<StoredFile | null>(null)
   const [mediaError, setMediaError] = useState(false)
+  const [deleting, setDeleting] = useState<string | null>(null)
   const input = useRef<HTMLInputElement>(null)
   const dialog = useRef<HTMLDialogElement>(null)
   const activeRequest = useRef<XMLHttpRequest | null>(null)
@@ -72,6 +103,18 @@ export function FileShare() {
       setPassword(''); await refresh()
     } catch (err) { setError(err instanceof Error ? err.message : 'Nie udało się zalogować.') }
     finally { setLoading(false) }
+  }
+  async function deleteFile(file: StoredFile) {
+    if (deleting || !window.confirm(`Usunąć „${file.name}”? Plik zostanie trwale usunięty z serwera.`)) return
+    setDeleting(file.id); setError('')
+    try {
+      const response = await apiFetch(fileUrl(file), { method: 'DELETE' })
+      if (response.status === 401) { setAuthorized(false); throw new Error('Sesja wygasła. Zaloguj się ponownie.') }
+      if (!response.ok && response.status !== 404) throw new Error('Nie udało się usunąć pliku. Spróbuj ponownie.')
+      setFiles(previous => previous.filter(item => item.id !== file.id))
+      if (preview?.id === file.id) setPreview(null)
+    } catch (err) { setError(err instanceof Error ? err.message : 'Nie udało się usunąć pliku.') }
+    finally { setDeleting(null) }
   }
   async function upload(selected: FileList | File[]) {
     if (uploading || !selected.length) return
@@ -119,7 +162,7 @@ export function FileShare() {
       {queue.length > 0 && <section className="fs-queue" aria-label="Postęp przesyłania" aria-live="polite">{queue.map((item, index) => <div className="fs-queue-item" key={index}><span>{item.name}</span><small className={item.status === 'error' ? 'fs-error' : ''}>{item.status === 'done' ? 'Zapisano ✓' : item.status === 'error' ? item.error : item.status === 'waiting' ? 'W kolejce' : item.progress === 100 ? 'Zapisywanie…' : `${item.progress}%`}</small>{item.status === 'uploading' && <progress value={item.progress} max={100} aria-label={`Przesyłanie ${item.name}`} />}</div>)}{!uploading && <button className="fs-text-button" onClick={() => setQueue([])}>Ukryj postęp ×</button>}</section>}
       {error && <p className="fs-error" role="alert">{error} <button className="fs-text-button" onClick={() => refresh().then(() => setError('')).catch(err => setError(err.message))}>Spróbuj ponownie</button></p>}
       <section className="fs-library"><div className="fs-library-head"><div><span className="fs-kicker">BIBLIOTEKA / {String(folders.findIndex(item => item.id === folder) + 1).padStart(2, '0')}</span><h2>{activeFolder.label} <small>{visible.length}</small></h2></div><label className="fs-search"><span>Szukaj</span><input type="search" placeholder="Nazwa pliku…" value={query} onChange={event => setQuery(event.target.value)} /></label></div>
-      {visible.length === 0 ? <div className="fs-empty"><Icon name="folder" /><h3>{query ? 'Nie znaleziono plików.' : 'Miejsce na coś Twojego.'}</h3><p>{query ? 'Spróbuj wpisać inną nazwę.' : `Dodaj pierwsze pliki do folderu ${activeFolder.label.toLocaleLowerCase('pl')}.`}</p></div> : <div className="fs-grid">{visible.map(file => <article className="fs-file" key={file.id}>{file.folder === 'pliki' ? <div className="fs-thumbnail"><Icon name="file" /><span>{file.name.split('.').pop()?.toUpperCase()}</span></div> : <button className="fs-thumbnail" aria-label={`Podgląd: ${file.name}`} onClick={() => setPreview(file)}>{file.folder === 'zdjecia' ? <img src={fileUrl(file)} alt={file.name} loading="lazy" /> : <><Icon name={file.folder === 'filmy' ? 'video' : 'music'} /><span>{file.folder === 'filmy' ? 'Odtwórz film ↗' : 'Posłuchaj ↗'}</span></>}</button>}<div className="fs-file-info"><h3 title={file.name}>{file.name}</h3><p>{bytes(file.size)} <span>·</span> {new Date(file.createdAt).toLocaleDateString('pl-PL')}</p><div>{file.folder !== 'pliki' && <button className="fs-text-button" onClick={() => setPreview(file)}>Podgląd ↗</button>}<a href={`${fileUrl(file)}?download=1`}>Pobierz ↓</a></div></div></article>)}</div>}
+      {visible.length === 0 ? <div className="fs-empty"><Icon name="folder" /><h3>{query ? 'Nie znaleziono plików.' : 'Miejsce na coś Twojego.'}</h3><p>{query ? 'Spróbuj wpisać inną nazwę.' : `Dodaj pierwsze pliki do folderu ${activeFolder.label.toLocaleLowerCase('pl')}.`}</p></div> : <div className="fs-grid">{visible.map(file => <article className="fs-file" key={file.id}>{file.folder === 'pliki' ? <div className="fs-thumbnail"><Icon name="file" /><span>{file.name.split('.').pop()?.toUpperCase()}</span></div> : <button className="fs-thumbnail" aria-label={`Podgląd: ${file.name}`} onClick={() => setPreview(file)}>{file.folder === 'zdjecia' ? <ImageThumbnail file={file} /> : file.folder === 'filmy' ? <VideoThumbnail file={file} /> : <><Icon name="music" /><span>Posłuchaj ↗</span></>}</button>}<div className="fs-file-info"><h3 title={file.name}>{file.name}</h3><p>{bytes(file.size)} <span>·</span> {new Date(file.createdAt).toLocaleDateString('pl-PL')}</p><div>{file.folder !== 'pliki' && <button className="fs-text-button" onClick={() => setPreview(file)}>Podgląd ↗</button>}<a href={`${fileUrl(file)}?download=1`}>Pobierz ↓</a></div><button className="fs-delete" disabled={deleting !== null} aria-label={`Usuń: ${file.name}`} onClick={() => void deleteFile(file)}><Icon name="trash" />{deleting === file.id ? 'Usuwanie…' : 'Usuń'}</button></div></article>)}</div>}
       <p className="fs-format-note">Podgląd zależy od formatów obsługiwanych przez Twoją przeglądarkę. Każdy plik możesz pobrać w oryginale.</p></section>
     </>}
     <footer className="fs-footer"><span>MIKAM / FILESHARE</span><span>Twoje pliki. Pełna jakość.</span></footer>

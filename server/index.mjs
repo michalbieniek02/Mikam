@@ -39,7 +39,7 @@ app.use('/api/fileshare', (req, res, next) => {
   res.set({ 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' })
   const origin = req.get('origin')
   if (origin && origin === allowedOrigin) {
-    res.set({ 'Access-Control-Allow-Origin': origin, 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Headers': 'Content-Type, X-File-Name', 'Access-Control-Allow-Methods': 'GET, HEAD, POST, PUT, OPTIONS', Vary: 'Origin' })
+    res.set({ 'Access-Control-Allow-Origin': origin, 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Headers': 'Content-Type, X-File-Name', 'Access-Control-Allow-Methods': 'GET, HEAD, POST, PUT, DELETE, OPTIONS', Vary: 'Origin' })
   }
   if (req.method === 'OPTIONS') return res.sendStatus(204)
   if (!['GET', 'HEAD', 'OPTIONS'].includes(req.method)) {
@@ -74,11 +74,17 @@ app.post('/api/fileshare/logout', (req, res) => {
 })
 async function listFiles(folder) {
   const names = await readdir(path.join(storage, folder))
-  return Promise.all(names.filter(name => name.endsWith('.json')).map(async name => {
-    const meta = JSON.parse(await readFile(path.join(storage, folder, name), 'utf8'))
-    await stat(path.join(storage, folder, `${meta.id}.bin`))
-    return meta
+  const files = await Promise.all(names.filter(name => name.endsWith('.json')).map(async name => {
+    try {
+      const meta = JSON.parse(await readFile(path.join(storage, folder, name), 'utf8'))
+      await stat(path.join(storage, folder, `${meta.id}.bin`))
+      return meta
+    } catch (error) {
+      if (error.code === 'ENOENT') return null // A file can be deleted while listing.
+      throw error
+    }
   }))
+  return files.filter(Boolean)
 }
 app.get('/api/fileshare', async (_req, res) => {
   const groups = await Promise.all(folders.map(listFiles))
@@ -115,6 +121,18 @@ app.put('/api/fileshare/:folder', async (req, res, next) => {
     await Promise.all(['.part', '.bin', '.json.part'].map(ext => rm(`${base}${ext}`, { force: true })))
     next(error)
   }
+})
+app.delete('/api/fileshare/:folder/:id', async (req, res) => {
+  const base = path.join(storage, req.params.folder, req.params.id)
+  await rename(`${base}.json`, `${base}.json.deleting`)
+  try {
+    await rm(`${base}.bin`, { force: true })
+  } catch (error) {
+    await rename(`${base}.json.deleting`, `${base}.json`)
+    throw error
+  }
+  await rm(`${base}.json.deleting`, { force: true })
+  res.sendStatus(204)
 })
 app.get('/api/fileshare/:folder/:id', async (req, res, next) => {
   const base = path.join(storage, req.params.folder, req.params.id)

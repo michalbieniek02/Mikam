@@ -56,12 +56,21 @@
 .fs-thumbnail svg { width: 40px; height: 40px; }
 .fs-thumbnail span { font: 10px 'DM Mono',monospace; }
 .fs-thumbnail img { width: 100%; height: 100%; object-fit: cover; }
+.fs-thumbnail { position: relative; }
+.fs-video-frame { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; pointer-events: none; }
+.fs-video-frame.is-ready { opacity: 1; }
+.fs-video-fallback { display: flex; flex-direction: column; align-items: center; gap: 15px; }
+.fs-thumbnail .fs-video-play { position: absolute; bottom: 12px; left: 12px; display: grid; place-items: center; width: 35px; height: 35px; border-radius: 50%; background: #0009; color: white; }
+.fs-video-play svg { width: 22px; height: 22px; }
 .fs-file-info { padding: 16px; }
 .fs-file-info h3 { white-space: nowrap; text-overflow: ellipsis; overflow: hidden; font-size: 12px; font-weight: 500; margin: 0 0 10px; }
 .fs-file-info p { font: 9px 'DM Mono',monospace; color: #999da0; }
 .fs-file-info p span { margin: 0 5px; }
 .fs-file-info>div { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #343537; padding-top: 6px; margin-top: 16px; }
 .fs-file-info a { font-size: 11px; padding: 7px 0; margin-left: auto; }
+.fs-delete { display: flex; align-items: center; justify-content: center; gap: 7px; width: 100%; padding: 10px; margin-top: 9px; border: 1px solid #543b3a; border-radius: 3px; background: transparent; color: #ffada4; font-size: 11px; }
+.fs-delete svg { width: 14px; height: 14px; }
+.fs-delete:hover { border-color: #ffada4; background: #ffada40b; }
 .fs-queue { padding: 18px; background: #191a1c; margin-top: 14px; border: 1px solid #343537; border-radius: 4px; }
 .fs-queue-item { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding: 9px 0; font-size: 12px; }
 .fs-queue-item>span { overflow-wrap: anywhere; }

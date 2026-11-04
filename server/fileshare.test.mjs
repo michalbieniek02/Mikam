@@ -1,7 +1,7 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { spawn } from 'node:child_process'
-import { mkdtemp, rm } from 'node:fs/promises'
+import { mkdtemp, rm, stat } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 import { setTimeout } from 'node:timers/promises'
@@ -16,7 +16,7 @@ test('private storage preserves originals, ranges, names and files after restart
   const base = `http://127.0.0.1:${port}/api/fileshare`
   let child
   async function start() {
-    child = spawn(process.execPath, ['server/index.mjs'], { env: { ...process.env, NODE_ENV: 'test', FILESHARE_STORAGE: storage, FILESHARE_PASSWORD: 'test-password', FILESHARE_MAX_BYTES: '2048', PORT: String(port) }, stdio: 'pipe' })
+    child = spawn(process.execPath, ['server/index.mjs'], { env: { ...process.env, NODE_ENV: 'test', FILESHARE_STORAGE: storage, FILESHARE_PASSWORD: 'test-password', FILESHARE_MAX_BYTES: '2048', FILESHARE_ORIGIN: 'https://mikam.cloud', PORT: String(port) }, stdio: 'pipe' })
     let output = ''
     child.stderr.on('data', chunk => { output += chunk })
     for (let i = 0; i < 100; i++) {
@@ -70,6 +70,20 @@ test('private storage preserves originals, ranges, names and files after restart
     const persistent = await (await fetch(base, { headers: { Cookie: cookie } })).json()
     assert.equal(persistent.files.length, 5)
     assert.deepEqual(Buffer.from(await (await fetch(`${base}/pliki/${entries[0].id}`, { headers: { Cookie: cookie } })).arrayBuffer()), original)
+    const deletedUrl = `${base}/filmy/${entries[2].id}`
+    assert.equal((await fetch(deletedUrl, { method: 'DELETE' })).status, 401)
+    assert.equal((await fetch(deletedUrl, { method: 'DELETE', headers: { Cookie: cookie, Origin: 'https://attacker.invalid' } })).status, 403)
+    const preflight = await fetch(deletedUrl, { method: 'OPTIONS', headers: { Origin: 'https://mikam.cloud', 'Access-Control-Request-Method': 'DELETE' } })
+    assert.match(preflight.headers.get('access-control-allow-methods'), /DELETE/)
+    assert.equal((await fetch(deletedUrl, { method: 'DELETE', headers: { Cookie: cookie, Origin: 'https://mikam.cloud' } })).status, 204)
+    await assert.rejects(stat(path.join(storage, 'filmy', `${entries[2].id}.bin`)), { code: 'ENOENT' })
+    await assert.rejects(stat(path.join(storage, 'filmy', `${entries[2].id}.json`)), { code: 'ENOENT' })
+    assert.equal((await fetch(deletedUrl, { headers: { Cookie: cookie } })).status, 404)
+    assert.equal((await fetch(deletedUrl, { method: 'DELETE', headers: { Cookie: cookie } })).status, 404)
+    assert.equal((await (await fetch(base, { headers: { Cookie: cookie } })).json()).files.length, 4)
+    assert.deepEqual(Buffer.from(await (await fetch(`${base}/pliki/${entries[0].id}`, { headers: { Cookie: cookie } })).arrayBuffer()), original)
+    await stop(); await start(); cookie = await login()
+    assert.equal((await fetch(deletedUrl, { headers: { Cookie: cookie } })).status, 404)
     assert.equal((await fetch(`${base}/logout`, { method: 'POST', headers: { Cookie: cookie } })).status, 200)
     assert.equal((await fetch(base, { headers: { Cookie: cookie } })).status, 401)
   } finally {
