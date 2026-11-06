@@ -64,6 +64,12 @@
 .fs-video-play svg { width: 22px; height: 22px; }
 .fs-file-info { padding: 16px; }
 .fs-file-info h3 { white-space: nowrap; text-overflow: ellipsis; overflow: hidden; font-size: 12px; font-weight: 500; margin: 0 0 10px; }
+.fs-filename { display: block; max-width: 100%; padding: 0; border: 0; background: none; color: inherit; font: inherit; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left; }
+.fs-filename:hover { color: var(--lime); }
+.fs-text-preview { width: 100%; min-width: 0; padding: 22px; }
+.fs-text-preview pre { max-height: 55vh; margin: 0; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; tab-size: 2; font: 12px/1.9 'DM Mono', monospace; color: #e2e5dc; text-align: left; }
+.fs-text-preview p { margin: 0; padding: 0; }
+.fs-text-preview .fs-text-limit { margin-top: 18px; padding-top: 14px; border-top: 1px solid #343537; color: #a4a6a7; font-size: 11px; }
 .fs-file-info p { font: 9px 'DM Mono',monospace; color: #999da0; }
 .fs-file-info p span { margin: 0 5px; }
 .fs-file-info>div { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #343537; padding-top: 6px; margin-top: 16px; }
